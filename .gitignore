@@ -1,0 +1,6 @@
+cat .\.gitignore
+.gradle/
+build/
+.idea/
+.vscode/
+.DS_Store
