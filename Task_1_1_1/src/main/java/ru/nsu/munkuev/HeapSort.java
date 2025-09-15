@@ -6,6 +6,7 @@ package ru.nsu.munkuev;
 public class HeapSort {
     /**
      * Метод реализующий саму сортировку с помощью метода heapify
+     *
      * @param arr исходный массив
      */
     public static void sort(int[] arr){
