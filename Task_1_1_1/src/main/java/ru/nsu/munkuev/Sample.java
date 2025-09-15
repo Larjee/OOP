@@ -9,6 +9,12 @@ public class Sample {
     }
 
     public static void main(String[] args) {
-        printHelloWorld();
+        //printHelloWorld();
+        int[] arr = {54, 12, 45, 31, 123, 34, 8};
+        HeapSort.sort(arr);
+        int n = arr.length;
+        for(int i = 0; i<n; i++){
+            System.out.printf("%d, ", arr[i]);
+        }
     }
 }
