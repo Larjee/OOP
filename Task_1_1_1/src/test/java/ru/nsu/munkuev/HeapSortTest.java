@@ -7,11 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class SampleTest {
 
     @Test
-    void doINeedToCheckDefaultConstructor() {
-        final var sampleInstance = new Sample();
-    }
-
-    @Test
     void checkEmptyArr(){
         int[] arr = {};
         HeapSort.sort(arr);

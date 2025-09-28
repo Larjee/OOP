@@ -4,6 +4,11 @@ package ru.nsu.munkuev;
  *  Класс, реализующий пирамидальную сортировку
 */
 public class HeapSort {
+
+    private HeapSort() {
+        throw new UnsupportedOperationException("This class can not be instantiated");
+    }
+
     /**
      * Метод реализующий саму сортировку с помощью метода heapify
      *
@@ -59,5 +64,3 @@ public class HeapSort {
 
 
 }
-
-
