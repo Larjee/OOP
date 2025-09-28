@@ -3,7 +3,7 @@ package ru.nsu.munkuev;
 /**
  *  Класс, реализующий пирамидальную сортировку
 */
-public class HeapSort {
+public final class HeapSort {
 
     private HeapSort() {
         throw new UnsupportedOperationException("This class can not be instantiated");
