@@ -4,3 +4,6 @@ build/
 .idea/
 .vscode/
 .DS_Store
+*.iml
+!gradle/wrapper/gradle-wrapper.jar
+
