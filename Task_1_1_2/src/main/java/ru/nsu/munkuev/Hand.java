@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 
 public class Hand {
+    private static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
     public List<Card> hand = new ArrayList<>();
 
     public void addCard(Card card){
@@ -20,7 +22,7 @@ public class Hand {
         boolean aceFlag = false;
         for(Card card: hand){
             int temp_value;
-            if(card.rank == "A"){
+            if(card.getRank() == "A"){
                 aceFlag = true;
             }
             summ += getIntValue(card);
@@ -33,19 +35,19 @@ public class Hand {
         return summ;
     }
 
-    String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
     public int getIntValue(Card card){
         int value = 0;
-
-        if(card.rank == "J" || card.rank == "Q" || card.rank == "K"){
+        String rank = card.getRank();
+        if(rank == "J" || rank == "Q" || rank == "K"){
             value = 10;
         }
-        else if(card.rank == "A"){
+        else if(rank == "A"){
             value = 11;
         }
         else{
             for(int i = 2; i<=10; i++){
-                if(card.rank == ranks[i-2]){
+                if(rank == RANKS[i-2]){
                     value = i;
                 }
             }

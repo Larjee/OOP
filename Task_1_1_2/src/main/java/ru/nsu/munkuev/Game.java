@@ -31,6 +31,18 @@ public final class Game {
     }
 
 
+    public List <Participant> getParticipants(){
+        List<Participant> participants = new ArrayList<>();
+
+        for(Player p : players){
+            participants.add(p);
+        }
+        participants.add(dealer);
+
+        return participants;
+    }
+
+
     public void prepare(){
         deck = new Deck();
         deck.shuffle();
@@ -74,7 +86,7 @@ public final class Game {
             System.out.printf("%s: ", participant.name);
             for (int i = 0; i < numberOfCards; i++) {
                 Card card = participant.hand.hand.get(i);
-                System.out.printf("%s%s ", card.suit, card.rank);
+                System.out.printf("%s%s ", card.getSuit(), card.getRank());
             }
             System.out.printf("(%d points)\n", participant.hand.getSumm());
         }
@@ -83,7 +95,7 @@ public final class Game {
 
             if(numberOfCards>0){
                 Card firstCard = participant.hand.hand.get(0);
-                System.out.printf("%s%s ", firstCard.suit, firstCard.rank);
+                System.out.printf("%s%s ", firstCard.getSuit(), firstCard.getRank());
             }
             for(int i = 1; i<numberOfCards;i++){
                 System.out.printf("[?]\n");
@@ -116,7 +128,7 @@ public final class Game {
                 if (answer.equals("y")) {
                     player.hand.hand.add(deck.getCard());
                     int numberOfCards = player.hand.hand.size();
-                    System.out.printf("%s got %s%s\n", player.name, player.hand.hand.get(numberOfCards - 1).suit, player.hand.hand.get(numberOfCards - 1).rank);
+                    System.out.printf("%s got %s%s\n", player.name, player.hand.hand.get(numberOfCards - 1).getSuit(), player.hand.hand.get(numberOfCards - 1).getRank());
                     int summ = player.hand.getSumm();
                     System.out.printf("%s's sum = %d\n\n", player.name, summ);
 
@@ -151,7 +163,7 @@ public final class Game {
         while(dealer.hand.getSumm() < 17){
             dealer.hand.hand.add(deck.getCard());
             int numberOfCards = dealer.hand.hand.size();
-            System.out.printf("Dealer got %s%s\n", dealer.hand.hand.get(numberOfCards - 1).suit, dealer.hand.hand.get(numberOfCards - 1).rank);
+            System.out.printf("Dealer got %s%s\n", dealer.hand.hand.get(numberOfCards - 1).getSuit(), dealer.hand.hand.get(numberOfCards - 1).getRank());
 
             int summ = dealer.hand.getSumm();
             System.out.printf("Dealer's sum = %d\n\n", summ);
