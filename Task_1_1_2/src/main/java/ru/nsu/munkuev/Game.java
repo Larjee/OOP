@@ -9,7 +9,7 @@ public final class Game {
 
     private static final List<Participant> participants = new ArrayList<>();
     private static final Dealer dealer = new Dealer("Dealer");
-    private final List<Player> players = new ArrayList<Player>();
+    private final List<Player> players = new ArrayList<>();
     private Deck deck;
 
     static{
@@ -67,12 +67,7 @@ public final class Game {
         }
 
         //Showing dealer hand
-        if(showAllDealerCards){
-            showHand(dealer, true);
-        }
-        else{
-            showHand(dealer, false);
-        }
+        showHand(dealer, showAllDealerCards);
 
     }
 
