@@ -6,7 +6,11 @@ import java.util.ArrayList;
 
 
 public class Hand {
-    public final List<Card> hand = new ArrayList<>();
+    private final List<Card> hand = new ArrayList<>();
+
+    public List<Card> getHand(){
+        return hand;
+    }
 
     public void addCard(Card card){
         hand.add(card);

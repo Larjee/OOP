@@ -45,9 +45,9 @@ class GameTest {
     void testAddCardAndClearHand() {
         Card card = new Card("♠", "A");
         hand.addCard(card);
-        assertEquals(1, hand.hand.size());
+        assertEquals(1, hand.getHand().size());
         hand.clear();
-        assertEquals(0, hand.hand.size());
+        assertEquals(0, hand.getHand().size());
     }
 
     @Test
@@ -77,10 +77,10 @@ class GameTest {
 
     @Test
     void testInitializationParticipants() {
-        assertEquals("Test name", player.name);
-        assertNotNull(player.hand);
-        assertEquals("Test dealer", dealer.name);
-        assertNotNull(dealer.hand);
+        assertEquals("Test name", player.getName());
+        assertNotNull(player.getHand());
+        assertEquals("Test dealer", dealer.getName());
+        assertNotNull(dealer.getHand());
     }
 
     @Test
@@ -90,7 +90,7 @@ class GameTest {
         game.clearHands();
 
         for (Participant p : game.getParticipants()) {
-            assertEquals(0, p.hand.hand.size());
+            assertEquals(0, p.getHand().getHand().size());
         }
     }
 }

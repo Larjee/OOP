@@ -1,15 +1,20 @@
 package ru.nsu.munkuev;
 
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
 public final class Game {
 
-    private List<Player> players = new ArrayList<Player>();
-    private Dealer dealer = new Dealer("Dealer");
+    private static final List<Participant> participants = new ArrayList<>();
+    private static final Dealer dealer = new Dealer("Dealer");
+    private final List<Player> players = new ArrayList<Player>();
     private Deck deck;
+
+    static{
+        participants.add(dealer);
+    }
 
     public void addingPlayers(){
 
@@ -21,23 +26,18 @@ public final class Game {
         int numberOfPlayers = scanner.nextInt();
         scanner.nextLine();
 
-        for(int i = 0; i<numberOfPlayers; i++){
-            System.out.printf("%s%d%s", "Enter name of ", i+1, " player: ");
+        for(int i = 0; i < numberOfPlayers; i++){
+            System.out.printf("%s%d%s", "Enter name of ", i + 1, " player: ");
             String name = scanner.nextLine();
-            players.add(new Player(name));
+            Player newPlayer = new Player(name);
+            players.add(newPlayer);
+            participants.add(newPlayer);
         }
 
     }
 
 
     public List <Participant> getParticipants(){
-        List<Participant> participants = new ArrayList<>();
-
-        for(Player p : players){
-            participants.add(p);
-        }
-        participants.add(dealer);
-
         return participants;
     }
 
@@ -51,11 +51,11 @@ public final class Game {
 
     public void dealStartCards(){
         for(Player player : players){
-            player.hand.addCard(deck.getCard());
-            player.hand.addCard(deck.getCard());
+            player.getHand().addCard(deck.getCard());
+            player.getHand().addCard(deck.getCard());
         }
-        dealer.hand.addCard(deck.getCard());
-        dealer.hand.addCard(deck.getCard());
+        dealer.getHand().addCard(deck.getCard());
+        dealer.getHand().addCard(deck.getCard());
     }
 
 
@@ -79,24 +79,24 @@ public final class Game {
 
     public void showHand(Participant participant, boolean showDealer){
 
-        int numberOfCards = participant.hand.hand.size();
+        int numberOfCards = participant.getHand().getHand().size();
 
         if(showDealer) {
-            System.out.printf("%s: ", participant.name);
+            System.out.printf("%s: ", participant.getName());
             for (int i = 0; i < numberOfCards; i++) {
-                Card card = participant.hand.hand.get(i);
+                Card card = participant.getHand().getHand().get(i);
                 System.out.printf("%s%s ", card.getSuit(), card.getRank());
             }
-            System.out.printf("(%d points)\n", participant.hand.getSum());
+            System.out.printf("(%d points)\n", participant.getHand().getSum());
         }
         else{
-            System.out.printf("%s: ",participant.name);
+            System.out.printf("%s: ",participant.getName());
 
-            if(numberOfCards>0){
-                Card firstCard = participant.hand.hand.get(0);
+            if(numberOfCards > 0){
+                Card firstCard = participant.getHand().getHand().get(0);
                 System.out.printf("%s%s ", firstCard.getSuit(), firstCard.getRank());
             }
-            for(int i = 1; i<numberOfCards;i++){
+            for(int i = 1; i < numberOfCards; i++){
                 System.out.printf("[?]\n");
             }
         }
@@ -113,7 +113,7 @@ public final class Game {
         for(Player player : players){
 
             //Telling whose player turn now and showing his cards
-            System.out.printf("\n ♥♦♣♠ %s! Your turn! ♥♦♣♠ \n", player.name);
+            System.out.printf("\n ♥♦♣♠ %s! Your turn! ♥♦♣♠ \n", player.getName());
 
             showHand(player, true);
 
@@ -125,11 +125,11 @@ public final class Game {
 
                 //If player take card
                 if (answer.equals("y")) {
-                    player.hand.hand.add(deck.getCard());
-                    int numberOfCards = player.hand.hand.size();
-                    System.out.printf("%s got %s%s\n", player.name, player.hand.hand.get(numberOfCards - 1).getSuit(), player.hand.hand.get(numberOfCards - 1).getRank());
-                    int summ = player.hand.getSum();
-                    System.out.printf("%s's sum = %d\n\n", player.name, summ);
+                    player.getHand().getHand().add(deck.getCard());
+                    int numberOfCards = player.getHand().getHand().size();
+                    System.out.printf("%s got %s%s\n", player.getName(), player.getHand().getHand().get(numberOfCards - 1).getSuit(), player.getHand().getHand().get(numberOfCards - 1).getRank());
+                    int summ = player.getHand().getSum();
+                    System.out.printf("%s's sum = %d\n\n", player.getName(), summ);
 
                     if (summ > 21){
                         System.out.printf(" ♥♦♣♠ You lose! ♥♦♣♠ \n");
@@ -138,7 +138,7 @@ public final class Game {
                 }
                 //If player refuse taking card
                 else if(answer.equals("n")){
-                    System.out.printf("%s refused to take card\n", player.name);
+                    System.out.printf("%s refused to take card\n", player.getName());
                     break;
                 }
                 //If player entered wrong symbols
@@ -159,12 +159,12 @@ public final class Game {
         //Show dealer's hand and if summ less than 17 picking cards until summ reaches 17
         showHand(dealer, true);
 
-        while(dealer.hand.getSum() < 17){
-            dealer.hand.hand.add(deck.getCard());
-            int numberOfCards = dealer.hand.hand.size();
-            System.out.printf("Dealer got %s%s\n", dealer.hand.hand.get(numberOfCards - 1).getSuit(), dealer.hand.hand.get(numberOfCards - 1).getRank());
+        while(dealer.getHand().getSum() < 17){
+            dealer.getHand().getHand().add(deck.getCard());
+            int numberOfCards = dealer.getHand().getHand().size();
+            System.out.printf("Dealer got %s%s\n", dealer.getHand().getHand().get(numberOfCards - 1).getSuit(), dealer.getHand().getHand().get(numberOfCards - 1).getRank());
 
-            int summ = dealer.hand.getSum();
+            int summ = dealer.getHand().getSum();
             System.out.printf("Dealer's sum = %d\n\n", summ);
 
             if(summ >= 17){
@@ -188,20 +188,20 @@ public final class Game {
 
         //find max points
         for(Player player : players){
-            int curPoints = player.hand.getSum();
+            int curPoints = player.getHand().getSum();
             if(curPoints > maxPoints && curPoints <= 21){
                 maxPoints = curPoints;
             }
         }
-        int dealerPoints = dealer.hand.getSum();
+        int dealerPoints = dealer.getHand().getSum();
         if(dealerPoints > maxPoints && dealerPoints <= 21){
             maxPoints = dealerPoints;
         }
 
         //find players with max points
         for(Player player : players){
-            if(player.hand.getSum() == maxPoints){
-                nameWinners.add(player.name);
+            if(player.getHand().getSum() == maxPoints){
+                nameWinners.add(player.getName());
             }
         }
         if(dealerPoints == maxPoints){
@@ -218,9 +218,9 @@ public final class Game {
 
     public void clearHands(){
         for(Player player : players){
-            player.hand.clear();
+            player.getHand().clear();
         }
-        dealer.hand.clear();
+        dealer.getHand().clear();
     }
 
 
