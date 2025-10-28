@@ -26,6 +26,8 @@ class GameTest {
         player = new Player("Test name");
         dealer = new Dealer("Test dealer");
         game = new Game();
+
+        dealerField(game).getHand().clear();
     }
 
     //Тесты на все служебные классы
@@ -179,7 +181,7 @@ class GameTest {
 
         d.getHand().addCard(new Card("♣", "A"));
         d.getHand().addCard(new Card("♦", "K"));
-
+        
         ByteArrayOutputStream out = captureOut();
         game.determineWinners(2);
         String s = out.toString();
