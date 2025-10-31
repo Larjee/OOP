@@ -181,7 +181,7 @@ class GameTest {
 
         d.getHand().addCard(new Card("♣", "A"));
         d.getHand().addCard(new Card("♦", "K"));
-        
+
         ByteArrayOutputStream out = captureOut();
         game.determineWinners(2);
         String s = out.toString();
