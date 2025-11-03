@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Разность двух выражений
  */
-public class Sub extends BinaryOperation{
+public class Sub extends BinaryOperation {
     /**
      * @param left - левое выражение
      * @param right - правое выражение
@@ -20,7 +20,7 @@ public class Sub extends BinaryOperation{
     }
 
     @Override
-    public String getOperator(){
+    public String getOperatorSign(){
         return " - ";
     }
 

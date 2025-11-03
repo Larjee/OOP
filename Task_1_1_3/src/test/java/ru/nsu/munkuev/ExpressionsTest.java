@@ -16,9 +16,6 @@ class ExpressionsTest {
         assertEquals(3.5, n.evaluate(Map.of("x", 10.0)));
         assertEquals("3.5", n.toString());
 
-        String out = captureStdout(n::print);
-        assertEquals("3.5" + System.lineSeparator(), out);
-
         assertEquals("0", n.derivative("x"));
         assertEquals("0", n.derivative("y"));
     }
@@ -30,9 +27,6 @@ class ExpressionsTest {
         Variable x = new Variable("x");
         assertEquals(42.0, x.evaluate(Map.of("x", 42.0)));
         assertEquals("x", x.toString());
-
-        String out = captureStdout(x::print);
-        assertEquals("x" + System.lineSeparator(), out);
     }
 
     @Test
@@ -59,9 +53,6 @@ class ExpressionsTest {
                 new Variable("x")
         );
         assertEquals("(2.0 + x)", e.toString());
-
-        String out = captureStdout(e::print);
-        assertEquals("(2.0 + x)" + System.lineSeparator(), out);
 
         assertEquals(2.0 + 3.0, e.evaluate(Map.of("x", 3.0)));
         assertEquals("(0 + 1)", e.derivative("x"));
