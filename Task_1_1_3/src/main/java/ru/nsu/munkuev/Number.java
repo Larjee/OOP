@@ -5,10 +5,12 @@ import java.util.Map;
 /**
  * Числовая константа.
  */
-public class Number extends Expression{
+public class Number implements Expression {
     private final double value;
 
-    /** @param value значение константы */
+    /**
+     * @param value значение константы
+     */
     public Number(double value){
         this.value = value;
     }
@@ -21,11 +23,6 @@ public class Number extends Expression{
     @Override
     public String toString(){
         return String.valueOf(value);
-    }
-
-    @Override
-    public void print(){
-        System.out.println(this.toString());
     }
 
     @Override

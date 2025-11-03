@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Переменная выражения
  */
-public class Variable extends Expression {
+public class Variable implements Expression {
     private final String name;
 
     /** @param name имя переменной (нельзя {@code null} или пустую строку) */
@@ -22,21 +22,16 @@ public class Variable extends Expression {
     }
 
     @Override
-    public String toString(){
-        return name;
-    }
-
-    @Override
-    public void print(){
-        System.out.println(this.toString());
-    }
-
-    @Override
     public String derivative(String variable) {
         if (variable.equals(name)) {
             return "1";
         } else {
             return "0";
         }
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 }

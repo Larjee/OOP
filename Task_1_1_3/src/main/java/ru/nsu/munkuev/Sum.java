@@ -20,7 +20,7 @@ public class Sum extends BinaryOperation{
     }
 
     @Override
-    protected String getOperator(){
+    protected String getOperatorSign(){
         return " + ";
     }
 

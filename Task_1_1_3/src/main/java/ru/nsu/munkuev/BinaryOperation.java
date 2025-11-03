@@ -1,12 +1,10 @@
 package ru.nsu.munkuev;
 
-import java.util.Map;
-
 /**
  * Базовый класс для бинарных операций (сложение, вычитание, умножение, деление).
  * Обеспечивает хранение левого/правого операнда и общий формат {@link #toString()}.
  */
-public abstract class BinaryOperation extends Expression{
+public abstract class BinaryOperation implements Expression{
     /** Левый операнд. */
     protected final Expression left;
     /** Правый операнд. */
@@ -24,21 +22,12 @@ public abstract class BinaryOperation extends Expression{
     }
 
     @Override
-    public abstract double evaluate(Map <String, Double> variables);
-
-    /** @return Символ операции, например "+", "-", "*", "/" */
-    protected abstract String getOperator();
-
-    @Override
     public String toString(){
-        return "(" + left + getOperator() + right + ")";
+        return "(" + left + getOperatorSign() + right + ")";
     }
 
-    @Override
-    public void print(){
-        System.out.println( "(" + left.toString() + getOperator() + right.toString() + ")");
-    }
-
-    @Override
-    public abstract String derivative(String variable);
+    /**
+     * @return Символ операции, например "+", "-", "*", "/"
+     */
+    protected abstract String getOperatorSign();
 }

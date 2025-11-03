@@ -3,11 +3,17 @@ package ru.nsu.munkuev;
 import java.util.Map;
 
 /**
- * Абстракция математического выражения.
- * Экземпляр можно вывести в строку, вычислить при подстановке значений переменных
- * и получить аналитическую производную по имени переменной.
+ * Интерфейс для математического выражения. Позволяет вычислить выражение по
+ * заданному набору переменных, выислить производную выражения и выдать ее в виде строки.
+ * Так же позволяет напечатать выражение в виде строки используя toString().
+ * Чтобы создать выражение нужно использовать наследников этого класса.
+ * Add, Sub, Mul, Div, Number, Variable.
+ * Например multiplication = new Mul(new Number("5"), new Add(new Variable("x"), new Variable("y"))) // multiplication = 5 * (x + y);
+ * Чтобы добавить свой экземпляр выражения необходимо реализовать методы
+ * evaluate, deriavative и toString
+ * В случае ошибки класс должен выбросить {@link ArithmeticException}
  */
-public abstract class Expression {
+public interface Expression {
     /**
      * Вычисляет значение выражения при заданных значениях переменных.
      *
@@ -15,13 +21,7 @@ public abstract class Expression {
      *
      * @return Числовое значение выражения
      */
-    public abstract double evaluate(Map<String, Double> variables);
-
-    /** @return строковое представление выражения с безопасными скобками */
-    @Override public abstract String toString();
-
-    /** Печатает строковое представление выражения в стандартный поток. */
-    public abstract void print();
+    double evaluate(Map<String, Double> variables);
 
     /**
      * Возвращает строковое представление производной выражения по переменной.
@@ -29,5 +29,5 @@ public abstract class Expression {
      * @param variable имя переменной, по которой берется производная
      * @return Строка с формулой производной (в инфиксной записи)
      */
-    public abstract String derivative(String variable);
+    String derivative(String variable);
 }

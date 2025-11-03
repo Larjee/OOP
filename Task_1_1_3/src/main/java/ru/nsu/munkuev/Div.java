@@ -24,7 +24,7 @@ public class Div extends BinaryOperation{
     }
 
     @Override
-    public String getOperator(){
+    public String getOperatorSign(){
         return "/";
     }
 
