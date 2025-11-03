@@ -6,11 +6,11 @@ import java.util.Map;
  * Интерфейс для математического выражения. Позволяет вычислить выражение по
  * заданному набору переменных, выислить производную выражения и выдать ее в виде строки.
  * Так же позволяет напечатать выражение в виде строки используя toString().
- * Чтобы создать выражение нужно использовать наследников этого класса.
+ * Чтобы создать выражение, нужно использовать наследников этого класса.
  * Add, Sub, Mul, Div, Number, Variable.
- * Например multiplication = new Mul(new Number("5"), new Add(new Variable("x"), new Variable("y"))) // multiplication = 5 * (x + y);
- * Чтобы добавить свой экземпляр выражения необходимо реализовать методы
- * evaluate, deriavative и toString
+ * Например {@code multiplication = new Mul(new Number("5"), new Add(new Variable("x"), new Variable("y"))) // multiplication = 5 * (x + y);}
+ * Чтобы добавить свой экземпляр выражения, необходимо реализовать методы
+ * evaluate, derivative и toString
  * В случае ошибки класс должен выбросить {@link ArithmeticException}
  */
 public interface Expression {

@@ -8,7 +8,9 @@ import java.util.Map;
 public class Variable implements Expression {
     private final String name;
 
-    /** @param name имя переменной (нельзя {@code null} или пустую строку) */
+    /**
+     @param name имя переменной (нельзя {@code null} или пустую строку)
+     */
     public Variable(String name){
         this.name = name;
     }
@@ -25,7 +27,8 @@ public class Variable implements Expression {
     public String derivative(String variable) {
         if (variable.equals(name)) {
             return "1";
-        } else {
+        }
+        else {
             return "0";
         }
     }
