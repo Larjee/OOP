@@ -24,7 +24,9 @@ public class Mul extends BinaryOperation {
         return "*";
     }
 
-    /** {@inheritDoc} — {@code (f * g)' = (f' * g + f * g')} */
+    /**
+     {@inheritDoc} — {@code (f * g)' = (f' * g + f * g')}
+     */
     @Override
     public String derivative(String variable){
         return "(" + left.derivative(variable) + "*" + right  + " + " + left + "*" + right.derivative(variable) + ")";

@@ -28,7 +28,9 @@ public class Div extends BinaryOperation{
         return "/";
     }
 
-    /** {@inheritDoc} — {@code (f / g)' = (f' * g - f * g') / g^2} */
+    /**
+     {@inheritDoc} — {@code (f / g)' = (f' * g - f * g') / g^2}
+     */
     @Override
     public String derivative(String variable){
         return "(" + left.derivative(variable) + "*" + right  + " - " + left + "*" + right.derivative(variable) + ")" +

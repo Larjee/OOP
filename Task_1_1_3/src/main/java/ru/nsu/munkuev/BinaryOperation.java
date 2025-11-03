@@ -5,9 +5,13 @@ package ru.nsu.munkuev;
  * Обеспечивает хранение левого/правого операнда и общий формат {@link #toString()}.
  */
 public abstract class BinaryOperation implements Expression{
-    /** Левый операнд. */
+    /**
+     Левый операнд.
+     */
     protected final Expression left;
-    /** Правый операнд. */
+    /**
+     Правый операнд.
+     */
     protected final Expression right;
 
     /**
