@@ -70,18 +70,21 @@ loadScripts(document, 'script');</script>
 <h1 title="Class BinaryOperation" class="title">Class BinaryOperation</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="Expression.html" title="class in ru.nsu.munkuev">ru.nsu.munkuev.Expression</a>
 <div class="inheritance">ru.nsu.munkuev.BinaryOperation</div>
 </div>
-</div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code><a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a></code></dd>
+</dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
 <dd><code><a href="Div.html" title="class in ru.nsu.munkuev">Div</a></code>, <code><a href="Mul.html" title="class in ru.nsu.munkuev">Mul</a></code>, <code><a href="Sub.html" title="class in ru.nsu.munkuev">Sub</a></code>, <code><a href="Sum.html" title="class in ru.nsu.munkuev">Sum</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">BinaryOperation</span>
-<span class="extends-implements">extends <a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements <a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a></span></div>
 <div class="block">Базовый класс для бинарных операций (сложение, вычитание, умножение, деление).
  Обеспечивает хранение левого/правого операнда и общий формат <a href="#toString()"><code>toString()</code></a>.</div>
 </section>
@@ -96,12 +99,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected final <a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a></code></div>
 <div class="col-second even-row-color"><code><a href="#left" class="member-name-link">left</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Левый операнд.</div>
 </div>
-<div class="col-first odd-row-color"><code>protected final <a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#right" class="member-name-link">right</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Правый операнд.</div>
@@ -117,8 +120,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(ru.nsu.munkuev.Expression,ru.nsu.munkuev.Expression)" class="member-name-link">BinaryOperation</a><wbr>(<a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a>&nbsp;left,
- <a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a>&nbsp;right)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(ru.nsu.munkuev.Expression,ru.nsu.munkuev.Expression)" class="member-name-link">BinaryOperation</a><wbr>(<a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a>&nbsp;left,
+ <a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a>&nbsp;right)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Создаёт бинарную операцию.</div>
 </div>
@@ -136,33 +139,21 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#derivative(java.lang.String)" class="member-name-link">derivative</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;variable)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Возвращает строковое представление производной выражения по переменной.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#evaluate(java.util.Map)" class="member-name-link">evaluate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;variables)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Вычисляет значение выражения при заданных значениях переменных.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getOperator()" class="member-name-link">getOperator</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getOperatorSign()" class="member-name-link">getOperatorSign</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#print()" class="member-name-link">print</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Печатает строковое представление выражения в стандартный поток.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-ru.nsu.munkuev.Expression">Methods inherited from interface&nbsp;ru.nsu.munkuev.<a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a></h3>
+<code><a href="Expression.html#derivative(java.lang.String)">derivative</a>, <a href="Expression.html#evaluate(java.util.Map)">evaluate</a></code></div>
 </section>
 </li>
 </ul>
@@ -177,14 +168,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="left">
 <h3>left</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></span>&nbsp;<span class="element-name">left</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a></span>&nbsp;<span class="element-name">left</span></div>
 <div class="block">Левый операнд.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="right">
 <h3>right</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></span>&nbsp;<span class="element-name">right</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a></span>&nbsp;<span class="element-name">right</span></div>
 <div class="block">Правый операнд.</div>
 </section>
 </li>
@@ -199,8 +190,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;(ru.nsu.munkuev.Expression,ru.nsu.munkuev.Expression)">
 <h3>BinaryOperation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BinaryOperation</span><wbr><span class="parameters">(<a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a>&nbsp;left,
- <a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a>&nbsp;right)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BinaryOperation</span><wbr><span class="parameters">(<a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a>&nbsp;left,
+ <a href="Expression.html" title="interface in ru.nsu.munkuev">Expression</a>&nbsp;right)</span></div>
 <div class="block">Создаёт бинарную операцию.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -218,68 +209,22 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="evaluate(java.util.Map)">
-<h3>evaluate</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">evaluate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;variables)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="Expression.html#evaluate(java.util.Map)">Expression</a></code></span></div>
-<div class="block">Вычисляет значение выражения при заданных значениях переменных.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="Expression.html#evaluate(java.util.Map)">evaluate</a></code>&nbsp;in class&nbsp;<code><a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>variables</code> - Отображение: имя переменной -> значение</dd>
-<dt>Returns:</dt>
-<dd>Числовое значение выражения</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOperator()">
-<h3>getOperator</h3>
-<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOperator</span>()</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>Символ операции, например "+", "-", "*", "/"</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="Expression.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></code></dd>
-<dt>Returns:</dt>
-<dd>строковое представление выражения с безопасными скобками</dd>
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="print()">
-<h3>print</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">print</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="Expression.html#print()">Expression</a></code></span></div>
-<div class="block">Печатает строковое представление выражения в стандартный поток.</div>
+<section class="detail" id="getOperatorSign()">
+<h3>getOperatorSign</h3>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOperatorSign</span>()</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="Expression.html#print()">print</a></code>&nbsp;in class&nbsp;<code><a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="derivative(java.lang.String)">
-<h3>derivative</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">derivative</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;variable)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="Expression.html#derivative(java.lang.String)">Expression</a></code></span></div>
-<div class="block">Возвращает строковое представление производной выражения по переменной.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="Expression.html#derivative(java.lang.String)">derivative</a></code>&nbsp;in class&nbsp;<code><a href="Expression.html" title="class in ru.nsu.munkuev">Expression</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>variable</code> - имя переменной, по которой берется производная</dd>
 <dt>Returns:</dt>
-<dd>Строка с формулой производной (в инфиксной записи)</dd>
+<dd>Символ операции, например "+", "-", "*", "/"</dd>
 </dl>
 </section>
 </li>
