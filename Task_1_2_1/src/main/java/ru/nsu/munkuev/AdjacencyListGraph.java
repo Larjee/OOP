@@ -1,7 +1,6 @@
 package ru.nsu.munkuev;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AdjacencyListGraph implements Graph {
     private List<Vertex> vertices;
@@ -69,10 +68,12 @@ public class AdjacencyListGraph implements Graph {
 
     }
 
+
     @Override
     public boolean addVertex(Vertex vertex) {
         int n = vertices.size();
 
+        checkIndex(vertex.getId());
         for(Vertex v : vertices) {
             if(v.getId() == vertex.getId()) {
                 System.out.println("Vertex already exists");
@@ -92,6 +93,8 @@ public class AdjacencyListGraph implements Graph {
     public boolean removeVertex(Vertex vertex) {
         int vertexIndex = vertex.getId();
 
+        //Выполняем проверки на корректность входных данных
+        checkIndex(vertexIndex);
         if(!vertices.contains(vertex)) {
             System.out.println("Vertex does not exist");
             return false;
@@ -102,8 +105,19 @@ public class AdjacencyListGraph implements Graph {
         adjacencyList.remove(vertexIndex);
 
         //Перенумеровываем id у вершин вправо от удалённой
-        for (int k = vertexIndex; k < vertices.size(); k++) {
-            vertices.get(k).setId(k);
+        for (List<Integer> nbrs : adjacencyList) {
+            //убрать все ссылки на idx
+            nbrs.removeIf(to -> to == vertexIndex);
+            //сдвинуть индексы, которые были правее
+            for (int i = 0; i < nbrs.size(); i++) {
+                int to = nbrs.get(i);
+                if (to > vertexIndex) nbrs.set(i, to - 1);
+            }
+        }
+
+        //Перенумеровываем id у вершин вправо от удалённой
+        for (int i = vertexIndex; i < vertices.size(); i++) {
+            vertices.get(i).setId(i);
         }
 
         return true;
@@ -111,10 +125,13 @@ public class AdjacencyListGraph implements Graph {
 
     @Override
     public boolean addEdge(int from, int to) {
+        checkIndex(from);
+        checkIndex(to);
+
         //Проверяем нет ли уже такого ребра
         List<Integer> src = adjacencyList.get(from);
         if(src.contains(to)) {
-            System.out.println("Edge already exists");
+            System.out.printf("Cannot add edge (%d, %d) because it already exists\n", from, to);
             return false;
         }
         src.add(to);
@@ -124,10 +141,13 @@ public class AdjacencyListGraph implements Graph {
 
     @Override
     public boolean removeEdge(int from, int to) {
+        checkIndex(from);
+        checkIndex(to);
+
         //Проверяем есть ли такое ребро
         List<Integer> src = adjacencyList.get(from);
-        if(src.contains(to)) {
-            System.out.println("Edge does not exists");
+        if(!src.contains(to)) {
+            System.out.printf("Cannot remove edge (%d, %d) because it does not exist\n", from, to);
             return false;
         }
         //Ищем его и удаляем
@@ -163,8 +183,75 @@ public class AdjacencyListGraph implements Graph {
 
     @Override
     public List<Integer> getChildren(int vertex) {
-        return adjacencyList.get(vertex);
+        List<Integer> children = new ArrayList<>();
+        children.addAll(adjacencyList.get(vertex));
+
+        return children;
+    }
+
+    private void checkIndex(int i) {
+        if (i < 0 || i >= vertices.size()) throw new IndexOutOfBoundsException("Index: " + i);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Graph)) {
+            return false;
+        }
+
+        Graph other = (Graph) o;
+
+        // сравниваем количество вершин
+        int n = this.getVertices().size();
+        if (n != other.getVertices().size()) {
+            return false;
+        }
+
+        // сравниваем детей каждой вершины
+        for (int i = 0; i < n; i++) {
+            List<Integer> childrenThis = new ArrayList<>(this.getChildren(i));
+            List<Integer> childrenOther = new ArrayList<>(other.getChildren(i));
+
+            Collections.sort(childrenThis);
+            Collections.sort(childrenOther);
+
+            if (!childrenThis.equals(childrenOther)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("AdjacencyListGraph").append(System.lineSeparator());
+
+        sb.append("Vertices: ");
+        for (Vertex v : vertices) {
+            sb.append(v.getId()).append(' ');
+        }
+        sb.append(System.lineSeparator());
+
+        sb.append("Adjacency list:").append(System.lineSeparator());
+        for (int i = 0; i < adjacencyList.size(); i++) {
+            sb.append(i).append(": ");
+            List<Integer> neighbors = adjacencyList.get(i);
+            for (int j = 0; j < neighbors.size(); j++) {
+                sb.append(neighbors.get(j));
+                if (j + 1 < neighbors.size()) {
+                    sb.append(' ');
+                }
+            }
+            sb.append(System.lineSeparator());
+        }
+
+        return sb.toString();
+    }
 }

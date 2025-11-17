@@ -14,5 +14,6 @@ public interface Graph {
      List<Integer> getParents(int vertex);
      List<Integer> getChildren(int vertex);
 
+     boolean equals(Object o);
 
 }
