@@ -47,10 +47,49 @@ class GraphTest {
     }
 
 
+    // ============ Vertex ============
+    @Test
+    void vertexCreateSetAndGet(){
+        Vertex vertex_both = new Vertex("vertex_both", 1);
+        Vertex vertex_label = new Vertex("vertex_label");
+        Vertex vertex_id = new Vertex(1);
+
+        //Проверяем имена
+        assertEquals("vertex_both", vertex_both.getLabel());
+        assertEquals("vertex_label", vertex_label.getLabel());
+        assertNull(vertex_id.getLabel());
+
+        //Проверяем айди
+        assertEquals(1, vertex_both.getId());
+        assertEquals(1, vertex_id.getId());
+        assertEquals(0, vertex_label.getId());
+
+        //Проверяем сеттеры
+        vertex_both.setId(3);
+        vertex_both.setLabel("setNewLabel");
+        assertEquals(3, vertex_both.getId());
+        assertEquals("setNewLabel", vertex_both.getLabel());
+
+        vertex_label.setLabel("setNewLabel");
+        vertex_label.setId(4);
+        assertEquals(4, vertex_label.getId());
+        assertEquals("setNewLabel", vertex_label.getLabel());
+
+        vertex_id.setLabel("setNewLabel");
+        vertex_id.setId(5);
+        assertEquals(5, vertex_id.getId());
+        assertEquals("setNewLabel", vertex_id.getLabel());
+    }
+
+
     // ============ AdjacencyMatrixGraph ============
 
     @Test
     void adjacencyMatrix_addAndRemoveVertexAndEdge() {
+        AdjacencyMatrixGraph emptyGraph = new AdjacencyMatrixGraph();
+        assertTrue(emptyGraph.getVertices().isEmpty());
+        assertEquals(emptyGraph.getAdjacencyMatrix().length, 0);
+
         Graph g = new AdjacencyMatrixGraph(createVertices(3));
 
         assertEquals(3, g.getVertices().size());
@@ -81,6 +120,19 @@ class GraphTest {
         List<Vertex> vs = g.getVertices();
         assertEquals(0, vs.get(0).getId());
         assertEquals(1, vs.get(1).getId());
+
+
+        //Также нужно проверить все конструкторы
+
+        //Пустой конструктор
+        AdjacencyMatrixGraph emptyConstructorGraph =  new AdjacencyMatrixGraph();
+        assertTrue(emptyConstructorGraph.getVertices().isEmpty());
+        assertEquals(0, emptyConstructorGraph.getAdjacencyMatrix().length);
+
+        //Конструктор по матрице смежности
+        AdjacencyMatrixGraph adjacencyMatrixConstructorGraph = new AdjacencyMatrixGraph(new int[][]{{0,1,1}, {0,0,0}, {1,1,0}});
+        assertEquals(3, adjacencyMatrixConstructorGraph.getAdjacencyMatrix().length);
+        assertEquals(3, adjacencyMatrixConstructorGraph.getVertices().size());
     }
 
 
@@ -217,7 +269,7 @@ class GraphTest {
 
     // ============ Топологическая сортировка ============
 
-    
+
     private void assertValidTopologicalOrder(Graph g, List<Vertex> order) {
         int n = g.getVertices().size();
         assertEquals(n, order.size(), "В топологическом порядке должно быть столько же вершин, сколько в графе");
