@@ -164,16 +164,6 @@ public class AdjacencyMatrixGraph implements Graph {
         return vertices;
     }
 
-    public int[][] getAdjacencyMatrix() {
-        int size =  adjacencyMatrix.length;
-        int[][] adj = new int[size][size];
-
-        for(int i = 0; i < size; i++){
-            System.arraycopy(adjacencyMatrix[i], 0, adj[i], 0, size);
-        }
-
-        return adjacencyMatrix;
-    }
 
     @Override
     public List<Integer> getParents(int vertex) {
@@ -189,6 +179,19 @@ public class AdjacencyMatrixGraph implements Graph {
 
         return parents;
     }
+
+
+    public int[][] getAdjacencyMatrix() {
+        int size =  adjacencyMatrix.length;
+        int[][] adj = new int[size][size];
+
+        for(int i = 0; i < size; i++){
+            System.arraycopy(adjacencyMatrix[i], 0, adj[i], 0, size);
+        }
+
+        return adjacencyMatrix;
+    }
+
 
     @Override
     public List<Integer> getChildren(int vertex) {

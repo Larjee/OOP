@@ -13,6 +13,10 @@ public class Vertex {
         this.label = label;
     }
 
+    public Vertex(int id) {
+        this.id = id;
+    }
+
     public String getLabel() {
         return label;
     }
