@@ -96,6 +96,10 @@ class GraphTest {
         assertFalse(g.addEdge(0, -1));
         assertFalse(g.addEdge(3, 0));
         assertFalse(g.addEdge(0, 3));
+        assertFalse(g.removeEdge(-1, 0));
+        assertFalse(g.removeEdge(0, -1));
+        assertFalse(g.removeEdge(3, 0));
+        assertFalse(g.removeEdge(0, 3));
 
         // Добавляем рёбра 0 -> 1 и 1 -> 2
         assertTrue(g.addEdge(0, 1));
@@ -168,6 +172,9 @@ class GraphTest {
 
         // Старое ребро 2 -> 3 должно превратиться в 1 -> 2
         assertEquals(List.of(2), rewriteGraph.getChildren(1));
+
+
+        assertThrows(IllegalArgumentException.class, () -> new AdjacencyMatrixGraph((List<Vertex>) null));
     }
 
     // ====================================================================
@@ -185,6 +192,10 @@ class GraphTest {
         assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(0, -1));
         assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(3, 0));
         assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(0, 3));
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(3, 0));
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(0, 3));
 
         // Добавляем рёбра 0 -> 1 и 1 -> 2
         assertTrue(g.addEdge(0, 1));
@@ -245,7 +256,9 @@ class GraphTest {
         assertThrows(IllegalArgumentException.class, () -> new AdjacencyListGraph(createVertices(2), badAdjList));
     }
 
-    // ============ IncidenceMatrixGraph ============
+    // ======================================================================
+    // ======================== IncidenceMatrixGraph ========================
+    // ======================================================================
 
     @Test
     void incidenceMatrix_fullFunctionality_forAllConstructors() {
@@ -258,6 +271,14 @@ class GraphTest {
         assertFalse(g.addEdge(0, -1));
         assertFalse(g.addEdge(3, 0));
         assertFalse(g.addEdge(0, 3));
+        assertFalse(g.removeEdge(-1, 0));
+        assertFalse(g.removeEdge(0, -1));
+        assertFalse(g.removeEdge(3, 0));
+        assertFalse(g.removeEdge(0, 3));
+        assertThrows(IllegalArgumentException.class, () -> g.getParents(-1));
+        assertThrows(IllegalArgumentException.class, () -> g.getParents(3));
+        assertThrows(IllegalArgumentException.class, () -> g.getChildren(-1));
+        assertThrows(IllegalArgumentException.class, () -> g.getChildren(3));
 
         // Добавляем рёбра 0 -> 1 и 1 -> 2
         assertTrue(g.addEdge(0, 1));
@@ -299,6 +320,8 @@ class GraphTest {
         assertEquals(List.of(0), mGraph.getParents(1));
         assertEquals(List.of(1), mGraph.getParents(2));
 
+        assertThrows(IllegalArgumentException.class, () -> new IncidenceMatrixGraph((int[][]) null));
+
         // --- Конструктор по пустой матрице ---
         IncidenceMatrixGraph mEmpty = new IncidenceMatrixGraph(new int[0][0]);
         assertTrue(mEmpty.getVertices().isEmpty());
@@ -306,11 +329,11 @@ class GraphTest {
         // --- Конструктор по вершинам и матрице ---
         List<Vertex> vs = createVertices(3);
         int[][] m2 = {{-1, 0}, {1,-1}, {0, 1} };
-        IncidenceMatrixGraph fullGraph =
-                new IncidenceMatrixGraph(vs, m2);
+        IncidenceMatrixGraph fullGraph = new IncidenceMatrixGraph(vs, m2);
         assertEquals(3, fullGraph.getVertices().size());
         assertEquals(List.of(1), fullGraph.getChildren(0));
         assertEquals(List.of(2), fullGraph.getChildren(1));
+        assertThrows(IllegalArgumentException.class, () -> new IncidenceMatrixGraph(createVertices(2), null));
 
         // --- Неверные матрицы для конструкторов ---
         int[][] nonRect = {{-1, 0}, {1}};
@@ -319,9 +342,14 @@ class GraphTest {
         List<Vertex> badVs = createVertices(2);
         int[][] threeRows = {{0}, {0}, {0}};
         assertThrows(IllegalArgumentException.class, () -> new IncidenceMatrixGraph(badVs, threeRows));
+
+        assertThrows(IllegalArgumentException.class, () -> new IncidenceMatrixGraph((List<Vertex>) null));
+
     }
 
+    // ===========================================================
     // ============ equals между разными реализациями ============
+    // ===========================================================
 
     @Test
     void differentImplementations_withSameStructure_areEqual() {
@@ -353,7 +381,9 @@ class GraphTest {
         assertNotEquals(empty, matrixGraph);
     }
 
-    // ============ toString ============
+    // ==========================================================
+    // ======================== toString ========================
+    // ==========================================================
 
     @Test
     void toString_containsBasicInfo() {
@@ -381,7 +411,9 @@ class GraphTest {
         assertTrue(i.contains("Incidence matrix"));
     }
 
-    // ============ Топологическая сортировка ============
+    // ===========================================================================
+    // ======================== Топологическая сортировка ========================
+    // ===========================================================================
 
 
     private void assertValidTopologicalOrder(Graph g, List<Vertex> order) {
