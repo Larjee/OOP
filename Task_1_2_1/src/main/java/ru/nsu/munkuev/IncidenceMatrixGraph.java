@@ -8,7 +8,7 @@ public class IncidenceMatrixGraph implements Graph {
     private List<Vertex> vertices;
     private int[][] incidenceMatrix;
 
-    //Пустой конструктор — пустой граф
+    //Пустой конструктор
     public IncidenceMatrixGraph() {
         this.vertices = new ArrayList<>();
         this.incidenceMatrix = new int[0][0];
@@ -45,7 +45,7 @@ public class IncidenceMatrixGraph implements Graph {
         }
     }
 
-    //Конструктор по списку вершин — граф без рёбер
+    //Конструктор по списку вершин
     public IncidenceMatrixGraph(List<Vertex> vertices) {
         if (vertices == null) {
             throw new IllegalArgumentException("vertices is null");

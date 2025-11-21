@@ -47,7 +47,7 @@ class GraphTest {
     }
 
 
-    // ============ Vertex ============
+    // ======================== Vertex ========================
     @Test
     void vertexCreateSetAndGet(){
         Vertex vertex_both = new Vertex("vertex_both", 1);
@@ -81,22 +81,23 @@ class GraphTest {
         assertEquals("setNewLabel", vertex_id.getLabel());
     }
 
-
-    // ============ AdjacencyMatrixGraph ============
+    // ======================================================================
+    // ======================== AdjacencyMatrixGraph ========================
+    // ======================================================================
 
     @Test
-    void adjacencyMatrix_addAndRemoveVertexAndEdge() {
+    void adjacencyMatrix_fullFunctionality_forVerticesConstructorAndOthers() {
         Graph g = new AdjacencyMatrixGraph(createVertices(3));
 
         assertEquals(3, g.getVertices().size());
 
-        //Невалидные индексы
+        // Невалидные индексы
         assertFalse(g.addEdge(-1, 0));
         assertFalse(g.addEdge(0, -1));
         assertFalse(g.addEdge(3, 0));
         assertFalse(g.addEdge(0, 3));
 
-        //Добавляем рёбра 0 -> 1 и 1 -> 2
+        // Добавляем рёбра 0 -> 1 и 1 -> 2
         assertTrue(g.addEdge(0, 1));
         assertTrue(g.addEdge(1, 2));
 
@@ -105,38 +106,44 @@ class GraphTest {
         assertEquals(List.of(0), g.getParents(1));
         assertEquals(List.of(1), g.getParents(2));
 
-        //Повторное добавление ребра должно вернуть false
+        // Повторное добавление ребра
         assertFalse(g.addEdge(0, 1));
 
-        //Удаляем ребро 0 -> 1
+        // Удаляем ребро 0 -> 1
         assertTrue(g.removeEdge(0, 1));
         assertEquals(List.of(), g.getChildren(0));
         assertEquals(List.of(), g.getParents(1));
 
-        //Удаляем вершину с id = 1
+        // Удаляем вершину с id = 1
         Vertex v1 = g.getVertices().get(1);
         assertTrue(g.removeVertex(v1));
         assertEquals(2, g.getVertices().size());
 
-        //Проверяем, что id перенумеровались в 0..size-1
+        // Проверяем, что id перенумеровались в 0..size-1
         List<Vertex> vertices = g.getVertices();
         assertEquals(0, vertices.get(0).getId());
         assertEquals(1, vertices.get(1).getId());
 
-
-        //Также нужно проверить все конструкторы
-        //Пустой конструктор
-        AdjacencyMatrixGraph emptyConstructorGraph =  new AdjacencyMatrixGraph();
+        // --- Пустой конструктор ---
+        AdjacencyMatrixGraph emptyConstructorGraph = new AdjacencyMatrixGraph();
         assertTrue(emptyConstructorGraph.getVertices().isEmpty());
         assertEquals(0, emptyConstructorGraph.getAdjacencyMatrix().length);
 
-        //Конструктор по матрице смежности
-        AdjacencyMatrixGraph adjacencyMatrixConstructorGraph = new AdjacencyMatrixGraph(new int[][]{{0,1,1}, {0,0,0}, {1,1,0}});
+        // --- Конструктор по матрице смежности (валидный) ---
+        int[][] m = {{0, 1, 1}, {0, 0, 0}, {1, 1, 0}};
+        AdjacencyMatrixGraph adjacencyMatrixConstructorGraph = new AdjacencyMatrixGraph(m);
         assertEquals(3, adjacencyMatrixConstructorGraph.getAdjacencyMatrix().length);
         assertEquals(3, adjacencyMatrixConstructorGraph.getVertices().size());
+        // Проверим детей/родителей для одной вершины
+        assertEquals(List.of(1, 2), adjacencyMatrixConstructorGraph.getChildren(0));
+        assertEquals(List.of(0, 2), adjacencyMatrixConstructorGraph.getParents(1));
 
+        // --- Конструктор по матрице смежности (не квадратной) ---
+        int[][] badMatrix = {{0, 1}, {1, 0, 0}};
+        assertThrows(IllegalArgumentException.class,
+                () -> new AdjacencyMatrixGraph(badMatrix));
 
-        //Проверяем что вершины корректно перезаписываются
+        // --- Конструктор по вершинам: переписывание id и рёбра после удаления вершины ---
         AdjacencyMatrixGraph rewriteGraph = new AdjacencyMatrixGraph(createVertices(4));
         // Вершины: 0, 1, 2, 3
         // Рёбра:
@@ -159,24 +166,27 @@ class GraphTest {
         assertEquals(1, vertices.get(1).getId());
         assertEquals(2, vertices.get(2).getId());
 
-        List<Integer> children = rewriteGraph.getChildren(1);
-        for(int i : children) {
-            System.out.println(i);
-        }
         // Старое ребро 2 -> 3 должно превратиться в 1 -> 2
         assertEquals(List.of(2), rewriteGraph.getChildren(1));
     }
 
-
-    // ============ AdjacencyListGraph ============
+    // ====================================================================
+    // ======================== AdjacencyListGraph ========================
+    // ====================================================================
 
     @Test
-    void adjacencyList_addAndRemoveVertexAndEdge() {
+    void adjacencyList_fullFunctionality_forVerticesConstructorAndOthers() {
         Graph g = new AdjacencyListGraph(createVertices(3));
 
         assertEquals(3, g.getVertices().size());
 
-        // 0 -> 1, 1 -> 2
+        // Невалидные индексы
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(3, 0));
+        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(0, 3));
+
+        // Добавляем рёбра 0 -> 1 и 1 -> 2
         assertTrue(g.addEdge(0, 1));
         assertTrue(g.addEdge(1, 2));
 
@@ -185,34 +195,71 @@ class GraphTest {
         assertEquals(List.of(0), g.getParents(1));
         assertEquals(List.of(1), g.getParents(2));
 
-        // повторное добавление ребра
+        // Повторное добавление ребра
         assertFalse(g.addEdge(0, 1));
 
-        // удаляем ребро 0 -> 1
+        // Попытка удалить несуществующее ребро
+        assertFalse(g.removeEdge(0, 2));
+
+        // Удаляем ребро 0 -> 1
         assertTrue(g.removeEdge(0, 1));
         assertEquals(List.of(), g.getChildren(0));
         assertEquals(List.of(), g.getParents(1));
 
-        // удаляем вершину 1
+        // Удаляем вершину с id = 1
         Vertex v1 = g.getVertices().get(1);
         assertTrue(g.removeVertex(v1));
         assertEquals(2, g.getVertices().size());
 
-        List<Vertex> vs = g.getVertices();
-        assertEquals(0, vs.get(0).getId());
-        assertEquals(1, vs.get(1).getId());
-    }
+        // Проверяем, что id перенумеровались в 0..size-1
+        List<Vertex> vertices = g.getVertices();
+        assertEquals(0, vertices.get(0).getId());
+        assertEquals(1, vertices.get(1).getId());
 
+        // --- Пустой конструктор ---
+        AdjacencyListGraph emptyConstructorGraph = new AdjacencyListGraph();
+        assertTrue(emptyConstructorGraph.getVertices().isEmpty());
+
+        // --- Конструктор по вершинам ---
+        AdjacencyListGraph fromVertices = new AdjacencyListGraph(createVertices(3));
+        assertEquals(3, fromVertices.getVertices().size());
+        assertEquals(List.of(), fromVertices.getChildren(0));
+        assertEquals(List.of(), fromVertices.getParents(0));
+
+        // --- Полный конструктор по вершинам и списку смежности ---
+        List<Vertex> vs = createVertices(3);
+        List<List<Integer>> adjList = new ArrayList<>();
+        adjList.add(new ArrayList<>(List.of(1))); // 0 -> 1
+        adjList.add(new ArrayList<>(List.of(2))); // 1 -> 2
+        adjList.add(new ArrayList<>());// 2 -> -
+
+        AdjacencyListGraph fullGraph = new AdjacencyListGraph(vs, adjList);
+        assertEquals(List.of(1), fullGraph.getChildren(0));
+        assertEquals(List.of(2), fullGraph.getChildren(1));
+        assertEquals(List.of(0), fullGraph.getParents(1));
+        assertEquals(List.of(1), fullGraph.getParents(2));
+
+        // --- Неверный список смежности: размер не совпадает ---
+        List<List<Integer>> badAdjList = new ArrayList<>();
+        badAdjList.add(new ArrayList<>());
+        assertThrows(IllegalArgumentException.class, () -> new AdjacencyListGraph(createVertices(2), badAdjList));
+    }
 
     // ============ IncidenceMatrixGraph ============
 
     @Test
-    void incidenceMatrix_addAndRemoveVertexAndEdge() {
+    void incidenceMatrix_fullFunctionality_forAllConstructors() {
         Graph g = new IncidenceMatrixGraph(createVertices(3));
 
         assertEquals(3, g.getVertices().size());
 
-        // 0 -> 1, 1 -> 2
+        // Невалидные индексы
+        assertFalse(g.addEdge(-1, 0));
+        assertFalse(g.addEdge(0, -1));
+        assertFalse(g.addEdge(3, 0));
+        assertFalse(g.addEdge(0, 3));
+
+        // Добавляем рёбра 0 -> 1 и 1 -> 2
         assertTrue(g.addEdge(0, 1));
         assertTrue(g.addEdge(1, 2));
 
@@ -221,22 +268,57 @@ class GraphTest {
         assertEquals(List.of(0), g.getParents(1));
         assertEquals(List.of(1), g.getParents(2));
 
-        // повторное добавление ребра
+        // Повторное добавление ребра
         assertFalse(g.addEdge(0, 1));
 
-        // удаляем ребро 0 -> 1
+        // Удаляем ребро 0 -> 1
         assertTrue(g.removeEdge(0, 1));
         assertEquals(List.of(), g.getChildren(0));
         assertEquals(List.of(), g.getParents(1));
 
-        // удаляем вершину 1
+        // Удаляем вершину с id = 1
         Vertex v1 = g.getVertices().get(1);
         assertTrue(g.removeVertex(v1));
         assertEquals(2, g.getVertices().size());
 
-        List<Vertex> vs = g.getVertices();
-        assertEquals(0, vs.get(0).getId());
-        assertEquals(1, vs.get(1).getId());
+        // Проверяем, что id перенумеровались корректно
+        List<Vertex> vertices = g.getVertices();
+        assertEquals(0, vertices.get(0).getId());
+        assertEquals(1, vertices.get(1).getId());
+
+        // --- Пустой конструктор ---
+        IncidenceMatrixGraph empty = new IncidenceMatrixGraph();
+        assertTrue(empty.getVertices().isEmpty());
+
+        // --- Конструктор по матрице инцидентности ---
+        int[][] m = {{-1, 0}, { 1,-1}, { 0, 1}};
+        IncidenceMatrixGraph mGraph = new IncidenceMatrixGraph(m);
+        assertEquals(3, mGraph.getVertices().size());
+        assertEquals(List.of(1), mGraph.getChildren(0));
+        assertEquals(List.of(2), mGraph.getChildren(1));
+        assertEquals(List.of(0), mGraph.getParents(1));
+        assertEquals(List.of(1), mGraph.getParents(2));
+
+        // --- Конструктор по пустой матрице ---
+        IncidenceMatrixGraph mEmpty = new IncidenceMatrixGraph(new int[0][0]);
+        assertTrue(mEmpty.getVertices().isEmpty());
+
+        // --- Конструктор по вершинам и матрице ---
+        List<Vertex> vs = createVertices(3);
+        int[][] m2 = {{-1, 0}, {1,-1}, {0, 1} };
+        IncidenceMatrixGraph fullGraph =
+                new IncidenceMatrixGraph(vs, m2);
+        assertEquals(3, fullGraph.getVertices().size());
+        assertEquals(List.of(1), fullGraph.getChildren(0));
+        assertEquals(List.of(2), fullGraph.getChildren(1));
+
+        // --- Неверные матрицы для конструкторов ---
+        int[][] nonRect = {{-1, 0}, {1}};
+        assertThrows(IllegalArgumentException.class, () -> new IncidenceMatrixGraph(nonRect));
+
+        List<Vertex> badVs = createVertices(2);
+        int[][] threeRows = {{0}, {0}, {0}};
+        assertThrows(IllegalArgumentException.class, () -> new IncidenceMatrixGraph(badVs, threeRows));
     }
 
     // ============ equals между разными реализациями ============

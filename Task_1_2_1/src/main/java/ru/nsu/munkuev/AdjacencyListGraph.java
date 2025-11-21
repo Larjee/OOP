@@ -189,8 +189,10 @@ public class AdjacencyListGraph implements Graph {
         return children;
     }
 
-    private void checkIndex(int i) {
-        if (i < 0 || i >= vertices.size()) throw new IndexOutOfBoundsException("Index: " + i);
+    private void checkIndex(int index) {
+        if (index < 0 || index >= vertices.size()) {
+            throw new IllegalArgumentException("Index out of bounds");
+        }
     }
 
     @Override
