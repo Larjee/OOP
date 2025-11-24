@@ -76,6 +76,90 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Graph</span></div>
+<div class="block">Интерфейс ориентированного графа.
+
+ <h2>Общая модель</h2>
+ <ul>
+     <li>Граф ориентированный, без параллельных рёбер и петель (по смыслу реализаций).</li>
+     <li>Вершины хранятся в списке <a href="#getVertices()"><code>getVertices()</code></a>, индекс в списке совпадает с <a href="Vertex.html#getId()"><code>Vertex.getId()</code></a>.</li>
+     <li>Все методы, принимающие вершину по числовому id, ожидают id в диапазоне <code>[0, getVertices().size())</code>.</li>
+ </ul>
+
+ <h2>Для разработчиков: как добавить новую реализацию графа</h2>
+ <ol>
+     <li>Создайте класс, реализующий <code>Graph</code> (например, <code>MyFancyGraph</code>).</li>
+     <li>Выберите внутреннее представление (матрица смежности, списки смежности, матрица инцидентности и т.п.).</li>
+     <li>Гарантируйте инвариант:
+         <ul>
+             <li>Список вершин не содержит <code>null</code>.</li>
+             <li><a href="Vertex.html#getId()"><code>Vertex.getId()</code></a> для i-й вершины всегда равен i.</li>
+             <li>Все методы корректно обновляют и структуру рёбер, и id вершин при добавлении/удалении.</li>
+         </ul>
+     </li>
+     <li>Реализуйте методы:
+         <ul>
+             <li><a href="#addVertex(ru.nsu.munkuev.Vertex)"><code>addVertex(Vertex)</code></a> / <a href="#removeVertex(ru.nsu.munkuev.Vertex)"><code>removeVertex(Vertex)</code></a> — добавление и удаление вершин;</li>
+             <li><a href="#addEdge(int,int)"><code>addEdge(int, int)</code></a> / <a href="#removeEdge(int,int)"><code>removeEdge(int, int)</code></a> — добавление и удаление рёбер;</li>
+             <li><a href="#getParents(int)"><code>getParents(int)</code></a> / <a href="#getChildren(int)"><code>getChildren(int)</code></a> — доступ к структуре графа;</li>
+             <li><a href="#getVertices()"><code>getVertices()</code></a> — доступ к вершинам.</li>
+         </ul>
+     </li>
+     <li>Для корректной работы с существующими тестами:
+         <ul>
+             <li>Для некорректных индексов в <code>addEdge/removeEdge</code> возвращайте <code>false</code> (не бросайте исключения).</li>
+             <li>Для некорректных индексов в <code>getParents/getChildren</code> логично бросать <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a>.</li>
+         </ul>
+     </li>
+ </ol>
+
+ <h2>Интеграция с существующими реализациями</h2>
+ <p>
+ Все текущие реализации (<a href="AdjacencyMatrixGraph.html" title="class in ru.nsu.munkuev"><code>AdjacencyMatrixGraph</code></a>, <a href="AdjacencyListGraph.html" title="class in ru.nsu.munkuev"><code>AdjacencyListGraph</code></a>, <a href="IncidenceMatrixGraph.html" title="class in ru.nsu.munkuev"><code>IncidenceMatrixGraph</code></a>)
+ используют <b>структурное равенство</b>:
+ два графа равны, если у них совпадает количество вершин и для каждой вершины совпадает отсортированный список детей.
+ </p>
+
+ <ul>
+     <li>Метод <a href="#equals(java.lang.Object)"><code>equals(Object)</code></a> в конкретных классах должен придерживаться <i>той же</i> идеи.</li>
+     <li>Метод <a href="#hashCode()"><code>hashCode()</code></a> по умолчанию реализован в интерфейсе и опирается на структуру детей каждой вершины.
+         Если вы переопределяете <code>equals</code> с другой логикой, <b>обязательно</b> переопределите и <code>hashCode</code> так,
+         чтобы он был совместим с вашим <code>equals</code>.</li>
+ </ul>
+
+ <h2>Для пользователей: какие графы есть и как их выбирать</h2>
+ <p>Доступны три реализации:</p>
+ <ul>
+     <li><a href="AdjacencyMatrixGraph.html" title="class in ru.nsu.munkuev"><code>AdjacencyMatrixGraph</code></a> — граф на матрице смежности.
+         <ul>
+             <li>Плюсы: O(1) проверка наличия ребра, простая реализация.</li>
+             <li>Минусы: потребление памяти O(n²), для разреженных графов может быть тяжело.</li>
+             <li>Рекомендуется для плотных графов и небольшого числа вершин.</li>
+         </ul>
+     </li>
+     <li><a href="AdjacencyListGraph.html" title="class in ru.nsu.munkuev"><code>AdjacencyListGraph</code></a> — граф на списках смежности.
+         <ul>
+             <li>Плюсы: память O(n + m), хорошо подходит для разреженных графов.</li>
+             <li>Минусы: проверка наличия ребра O(deg(v)), чуть сложнее реализация.</li>
+             <li>Рекомендуется как «дефолтный» вариант для большинства задач.</li>
+         </ul>
+     </li>
+     <li><a href="IncidenceMatrixGraph.html" title="class in ru.nsu.munkuev"><code>IncidenceMatrixGraph</code></a> — граф на матрице инцидентности (вершины × рёбра).
+         <ul>
+             <li>Плюсы: удобно для алгоритмов, которые активно работают с рёбрами, их удалением/фильтрацией.</li>
+             <li>Минусы: более сложное представление, дополнительная память на столбцы-рёбра.</li>
+             <li>Рекомендуется, если алгоритм естественно формулируется в терминах рёбер и их инцидентности.</li>
+         </ul>
+     </li>
+ </ul>
+
+ <p>
+ Пользователь выбирает реализацию в зависимости от:
+ </p>
+ <ul>
+     <li>размера графа и плотности рёбер,</li>
+     <li>частоты операций добавления/удаления,</li>
+     <li>того, важнее ли быстрый доступ по рёбрам или экономия памяти.</li>
+ </ul></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -93,29 +177,48 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addEdge(int,int)" class="member-name-link">addEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Добавляет ребро в текущий граф.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addVertex(ru.nsu.munkuev.Vertex)" class="member-name-link">addVertex</a><wbr>(<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&nbsp;vertex)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Добавляет вершину в текущий граф.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getChildren(int)" class="member-name-link">getChildren</a><wbr>(int&nbsp;vertex)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Возвращает список потомков конкретной вершины в текущем графе.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getParents(int)" class="member-name-link">getParents</a><wbr>(int&nbsp;vertex)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Возвращает список родителей конкретной вершины в текущем графе.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getVertices()" class="member-name-link">getVertices</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeEdge(int,int)" class="member-name-link">removeEdge</a><wbr>(int&nbsp;from,
- int&nbsp;to)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Возвращает список всех вершин текущего графа.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Структурный <code>hashCode</code> графа.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeVertex(ru.nsu.munkuev.Vertex)" class="member-name-link">removeVertex</a><wbr>(<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&nbsp;vertex)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeEdge(int,int)" class="member-name-link">removeEdge</a><wbr>(int&nbsp;from,
+ int&nbsp;to)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Удаляет ребро из текущего графа.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeVertex(ru.nsu.munkuev.Vertex)" class="member-name-link">removeVertex</a><wbr>(<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&nbsp;vertex)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Удаляет вершину из текущего графа.</div>
+</div>
 </div>
 </div>
 </div>
@@ -134,12 +237,30 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="addVertex(ru.nsu.munkuev.Vertex)">
 <h3>addVertex</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">addVertex</span><wbr><span class="parameters">(<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&nbsp;vertex)</span></div>
+<div class="block">Добавляет вершину в текущий граф.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>vertex</code> - добавляемая вершина</dd>
+<dt>Returns:</dt>
+<dd>результат добавления вершины</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если передана некорректная вершина</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="removeVertex(ru.nsu.munkuev.Vertex)">
 <h3>removeVertex</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">removeVertex</span><wbr><span class="parameters">(<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&nbsp;vertex)</span></div>
+<div class="block">Удаляет вершину из текущего графа.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>vertex</code> - удаляемая вершина</dd>
+<dt>Returns:</dt>
+<dd>результат удаления вершины</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если передана некорректная вершина</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -147,6 +268,16 @@ loadScripts(document, 'script');</script>
 <h3>addEdge</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">addEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
+<div class="block">Добавляет ребро в текущий граф.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>from</code> - начало ребра</dd>
+<dd><code>to</code> - конец ребра</dd>
+<dt>Returns:</dt>
+<dd>результат добавления ребра</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если переданы некорректное начало или конец ребра</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -154,24 +285,53 @@ loadScripts(document, 'script');</script>
 <h3>removeEdge</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">removeEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
+<div class="block">Удаляет ребро из текущего графа.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>from</code> - начало ребра</dd>
+<dd><code>to</code> - конец ребра</dd>
+<dt>Returns:</dt>
+<dd>результат удаления ребра</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если переданы некорректное начало или конец ребра</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getVertices()">
 <h3>getVertices</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;</span>&nbsp;<span class="element-name">getVertices</span>()</div>
+<div class="block">Возвращает список всех вершин текущего графа.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>список вершин графа</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getParents(int)">
 <h3>getParents</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">getParents</span><wbr><span class="parameters">(int&nbsp;vertex)</span></div>
+<div class="block">Возвращает список родителей конкретной вершины в текущем графе.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>vertex</code> - вершина, родителей которой надо узнать</dd>
+<dt>Returns:</dt>
+<dd>список родителей</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getChildren(int)">
 <h3>getChildren</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">getChildren</span><wbr><span class="parameters">(int&nbsp;vertex)</span></div>
+<div class="block">Возвращает список потомков конкретной вершины в текущем графе.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>vertex</code> - вершина, потомков которой надо узнать</dd>
+<dt>Returns:</dt>
+<dd>список потомков</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -181,6 +341,22 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Структурный <code>hashCode</code> графа.
+ <p>
+ Использует количество вершин и отсортированные списки детей для каждой вершины,
+ поэтому для любых двух графов, равных с точки зрения <a href="#equals(java.lang.Object)"><code>equals(Object)</code></a>, хеш-код совпадает.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Returns:</dt>
+<dd>хеш-код, совместимый с <a href="#equals(java.lang.Object)"><code>equals(Object)</code></a></dd>
 </dl>
 </section>
 </li>
