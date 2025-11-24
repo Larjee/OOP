@@ -412,6 +412,89 @@ class GraphTest {
     }
 
     // ===========================================================================
+    // ================================= Хеш-код =================================
+    // ===========================================================================
+    @Test
+    void adjacencyMatrix_sameHash() {
+        Graph g1 = new AdjacencyMatrixGraph(createVertices(6));
+        Graph g2 = new AdjacencyMatrixGraph(createVertices(6));
+
+        addSampleDAGEdges(g1);
+        addSampleDAGEdges(g2);
+
+        assertEquals(g1, g2);
+
+        int h1 = g1.hashCode();
+        int h2 = g2.hashCode();
+
+        assertEquals(g1.hashCode(), g2.hashCode());
+    }
+
+    @Test
+    void adjacencyMatrix_differentHash() {
+        Graph g1 = new AdjacencyMatrixGraph(createVertices(4));
+        Graph g2 = new AdjacencyMatrixGraph(createVertices(4));
+
+        g1.addEdge(0, 1);
+        g1.addEdge(1, 2);
+        g1.addEdge(2, 3);
+
+        assertNotEquals(g1, g2);
+        assertNotEquals(g1.hashCode(), g2.hashCode());
+    }
+
+    @Test
+    void adjacencyList_sameHash() {
+        Graph g1 = new AdjacencyListGraph(createVertices(6));
+        Graph g2 = new AdjacencyListGraph(createVertices(6));
+
+        addSampleDAGEdges(g1);
+        addSampleDAGEdges(g2);
+
+        assertEquals(g1, g2);
+        assertEquals(g1.hashCode(), g2.hashCode());
+    }
+
+    @Test
+    void adjacencyList_differentHash() {
+        Graph g1 = new AdjacencyListGraph(createVertices(4));
+        Graph g2 = new AdjacencyListGraph(createVertices(4));
+
+        g1.addEdge(0, 1);
+        g1.addEdge(1, 2);
+        g1.addEdge(2, 3);
+
+        assertNotEquals(g1, g2);
+        assertNotEquals(g1.hashCode(), g2.hashCode());
+    }
+
+    @Test
+    void incidenceMatrix_sameHash() {
+        Graph g1 = new IncidenceMatrixGraph(createVertices(6));
+        Graph g2 = new IncidenceMatrixGraph(createVertices(6));
+
+        addSampleDAGEdges(g1);
+        addSampleDAGEdges(g2);
+
+        assertEquals(g1, g2);
+        assertEquals(g1.hashCode(), g2.hashCode());
+    }
+
+    @Test
+    void incidenceMatrix_differentHash() {
+        Graph g1 = new IncidenceMatrixGraph(createVertices(4));
+        Graph g2 = new IncidenceMatrixGraph(createVertices(4));
+
+        g1.addEdge(0, 1);
+        g1.addEdge(1, 2);
+        g1.addEdge(2, 3);
+
+        assertNotEquals(g1, g2);
+        assertNotEquals(g1.hashCode(), g2.hashCode());
+    }
+
+
+    // ===========================================================================
     // ======================== Топологическая сортировка ========================
     // ===========================================================================
 
