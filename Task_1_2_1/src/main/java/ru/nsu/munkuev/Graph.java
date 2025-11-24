@@ -158,17 +158,6 @@ public interface Graph {
       *
       * @return хеш-код, совместимый с {@link #equals(Object)}
       */
-//     @Override
-//     default int hashCode() {
-//         int n = getVertices().size();
-//         int result = n;
-//
-//         for (int v = 0; v < n; v++) {
-//             List<Integer> children = new ArrayList<>(getChildren(v));
-//             Collections.sort(children);
-//             result = 31 * result + children.hashCode();
-//         }
-//
-//         return result;
-//     }
+     @Override
+     int hashCode();
 }
