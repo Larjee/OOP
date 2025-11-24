@@ -71,32 +71,41 @@ public class AdjacencyListGraph implements Graph {
 
     @Override
     public boolean addVertex(Vertex vertex) {
-        int n = vertices.size();
 
-        checkIndex(vertex.getId());
-        for(Vertex v : vertices) {
-            if(v.getId() == vertex.getId()) {
-                System.out.println("Vertex already exists");
-                return false;
-            }
+        //Проверки на корректность
+        if(checkIndex(vertex.getId())){
+            throw new IllegalArgumentException("Index out of bounds");
+        }
+        if(checkVertex(vertex)){
+            System.out.printf("Cannot add vertex with id = %d because it already exists", vertex.getId());
+            return false;
         }
 
+        int n = vertices.size();
+
+        //Добавляем в список вершин новую вершину
         vertices.add(vertex);
+        //Сохраняем в id вершины ее индекс в матрице смежности
         vertices.get(n).setId(n);
 
+        //Расширяем список смежности
         this.adjacencyList.add(new ArrayList<>());
 
         return true;
     }
 
+
     @Override
     public boolean removeVertex(Vertex vertex) {
+
         int vertexIndex = vertex.getId();
 
-        //Выполняем проверки на корректность входных данных
-        checkIndex(vertexIndex);
-        if(!vertices.contains(vertex)) {
-            System.out.println("Vertex does not exist");
+        //Проверки на корректность
+        if(!checkIndex(vertex.getId())){
+            throw new IllegalArgumentException("Index out of bounds");
+        }
+        if(!checkVertex(vertex)){
+            System.out.printf("Cannot remove vertex with id = %d because it does not exists", vertex.getId());
             return false;
         }
 
@@ -123,33 +132,42 @@ public class AdjacencyListGraph implements Graph {
         return true;
     }
 
+
     @Override
     public boolean addEdge(int from, int to) {
-        checkIndex(from);
-        checkIndex(to);
-
+        //Проверка на корректность индексов
+        if(!checkIndex(from) || !checkIndex(to)){
+            System.out.printf("Cannot add edge (%d, %d)) because index out of range", from, to);
+            return false;
+        }
         //Проверяем нет ли уже такого ребра
         List<Integer> src = adjacencyList.get(from);
         if(src.contains(to)) {
             System.out.printf("Cannot add edge (%d, %d) because it already exists\n", from, to);
             return false;
         }
+
+        //Добавляем ребро
         src.add(to);
 
         return true;
     }
 
+
     @Override
     public boolean removeEdge(int from, int to) {
-        checkIndex(from);
-        checkIndex(to);
-
-        //Проверяем есть ли такое ребро
+        //Проверка на корректность индексов
+        if(!checkIndex(from) || !checkIndex(to)){
+            System.out.printf("Cannot add edge (%d, %d)) because index out of range", from, to);
+            return false;
+        }
+        //Проверяем наличие ребра
         List<Integer> src = adjacencyList.get(from);
         if(!src.contains(to)) {
             System.out.printf("Cannot remove edge (%d, %d) because it does not exist\n", from, to);
             return false;
         }
+
         //Ищем его и удаляем
         int srcSize = src.size();
         for(int i = 0; i < srcSize; i++) {
@@ -161,16 +179,19 @@ public class AdjacencyListGraph implements Graph {
         return true;
     }
 
+
     @Override
     public List<Vertex> getVertices() {
         return vertices;
     }
+
 
     @Override
     public List<Integer> getParents(int vertex) {
         List<Integer> parents = new ArrayList<>();
         int n = vertices.size();
 
+        //Пробегаемся по матрице смежности и смотрим из каких вершин можем попасть в vertex
         for(int i = 0; i < n; i++) {
             List<Integer> src = adjacencyList.get(i);
             if(src.contains(vertex)) {
@@ -181,6 +202,7 @@ public class AdjacencyListGraph implements Graph {
         return parents;
     }
 
+
     @Override
     public List<Integer> getChildren(int vertex) {
         List<Integer> children = new ArrayList<>();
@@ -189,11 +211,6 @@ public class AdjacencyListGraph implements Graph {
         return children;
     }
 
-    private void checkIndex(int index) {
-        if (index < 0 || index >= vertices.size()) {
-            throw new IllegalArgumentException("Index out of bounds");
-        }
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -206,13 +223,13 @@ public class AdjacencyListGraph implements Graph {
 
         Graph other = (Graph) o;
 
-        // сравниваем количество вершин
+        //Сравниваем количество вершин
         int n = this.getVertices().size();
         if (n != other.getVertices().size()) {
             return false;
         }
 
-        // сравниваем детей каждой вершины
+        //Сравниваем детей каждой вершины
         for (int i = 0; i < n; i++) {
             List<Integer> childrenThis = new ArrayList<>(this.getChildren(i));
             List<Integer> childrenOther = new ArrayList<>(other.getChildren(i));
@@ -255,5 +272,29 @@ public class AdjacencyListGraph implements Graph {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Проверяет корректность индекса, при добавлении вершины или вставке ребра.
+     * @param index проверяемый индекс
+     * @return результат проверки. {@code true} если индекс корректный {@code false} в противном случае.
+     */
+    private boolean checkIndex(int index) {
+        return !(index < 0 || index >= vertices.size());
+    }
+
+
+    /**
+     * Проверяет принадлежность вершины к текущему графу.
+     * @param vertex вершина, для которой проверяется принадлежность
+     * @return результат проверки
+     */
+    private boolean checkVertex(Vertex vertex) {
+        for(Vertex v : vertices) {
+            if(v.getId() == vertex.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

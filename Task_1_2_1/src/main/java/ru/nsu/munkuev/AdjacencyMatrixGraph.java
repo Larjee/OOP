@@ -55,41 +55,45 @@ public class AdjacencyMatrixGraph implements Graph {
 
     @Override
     public boolean addVertex(Vertex vertex) {
-        for(Vertex v : vertices) {
-            if(v.getId() == vertex.getId()) {
-                System.out.printf("Cannot add vertex with id = %d, because it already exists\n",  vertex.getId());
-                return false;
-            }
+
+        //Проверки на корректность
+        if(checkIndex(vertex.getId())){
+            throw new IllegalArgumentException("Index out of bounds");
         }
+        if(checkVertex(vertex)){
+            System.out.printf("Cannot add vertex with id = %d because it already exists", vertex.getId());
+            return false;
+        }
+
+        int n = adjacencyMatrix.length;
 
         //Добавляем в список вершин новую вершину
         vertices.add(vertex);
+        //Сохраняем в id вершины ее индекс в матрице смежности
+        vertices.get(n).setId(n);
 
-        //И расширяем матрицу смежности
-        int n = adjacencyMatrix.length;
+        //Расширяем матрицу смежности
         int[][] newAdjacencyMatrix = new int[n+1][n+1];
         for(int i = 0; i < n; i++) {
             System.arraycopy(adjacencyMatrix[i], 0, newAdjacencyMatrix[i], 0, n);
         }
         adjacencyMatrix = newAdjacencyMatrix;
 
-        //Сохраняем в id вершины ее индекс в матрице смежности
-        vertices.get(n).setId(n);
-
         return true;
     }
 
+
     @Override
     public boolean removeVertex(Vertex vertex) {
-        //Индекс удаляемой вершины в матрице смежности
+
         int vertexIndex = vertex.getId();
 
-        //Выполняем проверки на корректность входных данных
-        if (vertexIndex < 0 || vertexIndex >= vertices.size()) {
-            return false;
+        //Проверки на корректность
+        if(!checkIndex(vertex.getId())){
+            throw new IllegalArgumentException("Index out of bounds");
         }
-        if(!vertices.contains(vertex)) {
-            System.out.printf("Cannot remove vertex with id = %d because it does not exists\n", vertex.getId());
+        if(!checkVertex(vertex)){
+            System.out.printf("Cannot remove vertex with id = %d because it does not exists", vertex.getId());
             return false;
         }
 
@@ -115,19 +119,19 @@ public class AdjacencyMatrixGraph implements Graph {
         adjacencyMatrix = newAdjacencyMatrix;
 
         //Перенумеровываем id у вершин вправо от удалённой
-        for (int k = vertexIndex; k < vertices.size(); k++) {
-            vertices.get(k).setId(k);
+        for (int i = vertexIndex; i < vertices.size(); i++) {
+            vertices.get(i).setId(i);
         }
 
         return true;
     }
 
+
     @Override
     public boolean addEdge(int from, int to) {
         //Проверка на корректность индексов
-        if(from < 0 || from >= vertices.size() || to < 0 || to >= vertices.size()) {
-            System.out.printf("Cannot add edge (%d, %d) because index out of range\n", from, to);
-
+        if(!checkIndex(from) || !checkIndex(to)){
+            System.out.printf("Cannot add edge (%d, %d)) because index out of range", from, to);
             return false;
         }
         //Проверяем нет ли уже такого ребра
@@ -136,16 +140,18 @@ public class AdjacencyMatrixGraph implements Graph {
             return false;
         }
 
+        //Добавляем ребро
         adjacencyMatrix[from][to] = 1;
 
         return true;
     }
 
+
     @Override
     public boolean removeEdge(int from, int to) {
         //Проверка на корректность индексов
-        if(from < 0 || from >= vertices.size() || to < 0 || to >= vertices.size()) {
-            System.out.printf("Cannot remove edge (%d, %d) because index out of range\n", from, to);
+        if(!checkIndex(from) || !checkIndex(to)){
+            System.out.printf("Cannot add edge (%d, %d)) because index out of range", from, to);
             return false;
         }
         //Проверяем наличие ребра
@@ -158,6 +164,7 @@ public class AdjacencyMatrixGraph implements Graph {
 
         return true;
     }
+
 
     @Override
     public List<Vertex> getVertices() {
@@ -181,18 +188,6 @@ public class AdjacencyMatrixGraph implements Graph {
     }
 
 
-    public int[][] getAdjacencyMatrix() {
-        int size =  adjacencyMatrix.length;
-        int[][] adj = new int[size][size];
-
-        for(int i = 0; i < size; i++){
-            System.arraycopy(adjacencyMatrix[i], 0, adj[i], 0, size);
-        }
-
-        return adjacencyMatrix;
-    }
-
-
     @Override
     public List<Integer> getChildren(int vertex) {
         int verticesSize = vertices.size();
@@ -209,10 +204,21 @@ public class AdjacencyMatrixGraph implements Graph {
     }
 
 
-    private void checkIndex(int index) {
-        if(index < 0 || index >= vertices.size()) {
-            throw new IllegalArgumentException("Index out of bounds");
+    /**
+     * Возвращает копию текущей матрицы смежности.
+     * Модификация этого массива не влияет на внутреннее состояние графа.
+     *
+     * @return новая матрица n×n с теми же значениями, что и внутренняя
+     */
+    public int[][] getAdjacencyMatrix() {
+        int n = adjacencyMatrix.length;
+        int[][] copy = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            System.arraycopy(adjacencyMatrix[i], 0, copy[i], 0, n);
         }
+
+        return copy;
     }
 
 
@@ -227,13 +233,13 @@ public class AdjacencyMatrixGraph implements Graph {
 
         Graph other = (Graph) o;
 
-        // сравниваем количество вершин
+        //Сравниваем количество вершин
         int n = this.getVertices().size();
         if (n != other.getVertices().size()) {
             return false;
         }
 
-        // сравниваем детей каждой вершины
+        //Сравниваем детей каждой вершины
         for (int i = 0; i < n; i++) {
             List<Integer> childrenThis = new ArrayList<>(this.getChildren(i));
             List<Integer> childrenOther = new ArrayList<>(other.getChildren(i));
@@ -273,5 +279,31 @@ public class AdjacencyMatrixGraph implements Graph {
         }
 
         return sb.toString();
+    }
+
+
+
+    /**
+     * Проверяет корректность индекса, при добавлении вершины или вставке ребра.
+     * @param index проверяемый индекс
+     * @return результат проверки. {@code true} если индекс корректный {@code false} в противном случае.
+     */
+    private boolean checkIndex(int index) {
+        return !(index < 0 || index >= vertices.size());
+    }
+
+
+    /**
+     * Проверяет принадлежность вершины к текущему графу.
+     * @param vertex вершина, для которой проверяется принадлежность
+     * @return результат проверки
+     */
+    private boolean checkVertex(Vertex vertex) {
+        for(Vertex v : vertices) {
+            if(v.getId() == vertex.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
