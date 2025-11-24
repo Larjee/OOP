@@ -6,12 +6,20 @@ public class AdjacencyListGraph implements Graph {
     private List<Vertex> vertices;
     private List<List<Integer>> adjacencyList;
 
-    //Пустой конструктор
+    /**
+     * Пустой конструктор. При инициализации пустой список вершин пустой список смежности.
+     */
     public AdjacencyListGraph() {
         this.vertices = new ArrayList<>();
         this.adjacencyList = new ArrayList<>();
     }
 
+    /**
+     * Конструктор по списку вершин. При инициализации создается список смежности, в котором каждая i-ая строка
+     * соответствует i-ой вершине. {@code i < vertices.size()}
+     * @param vertices список вершин
+     * @throws IllegalArgumentException если передана пустой список вершин
+     */
     //Конструктор по списку вершин
     public AdjacencyListGraph(List<Vertex> vertices) {
         if(vertices == null){
@@ -31,7 +39,13 @@ public class AdjacencyListGraph implements Graph {
         }
     }
 
-    //Конструктор полный
+    /**
+     * Конструктор по списку вершин и списку смежности. При инициализации список смежности приравнивается к переданному,
+     * аналогично для списка вершин.
+     * @param vertices список вершин
+     * @param adjacencyList список смежности
+     * @throws IllegalArgumentException если хоть один из списков пустой
+     */
     public AdjacencyListGraph(List<Vertex> vertices, List<List<Integer>> adjacencyList) {
         if (vertices == null || adjacencyList == null) {
             throw new IllegalArgumentException("vertices/adjacencyList is null");

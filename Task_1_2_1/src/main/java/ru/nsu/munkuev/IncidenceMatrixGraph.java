@@ -8,13 +8,22 @@ public class IncidenceMatrixGraph implements Graph {
     private List<Vertex> vertices;
     private int[][] incidenceMatrix;
 
-    //Пустой конструктор
+    /**
+     * Пустой конструктор. Создает граф с пустым списком вершин и нулевой матрицей инцидентности.
+     */
     public IncidenceMatrixGraph() {
         this.vertices = new ArrayList<>();
         this.incidenceMatrix = new int[0][0];
     }
 
-    //Конструктор по матрице инцидентности
+    /**
+     * Конструктор по матрице инцидентности.
+     * Создает граф с автоматически сгенерированными вершинами на основе матрицы инцидентности.
+     * Вершинам присваиваются имена, соответствующие их индексам.
+     * @param m матрица инцидентности, где m[i][j] представляет связь i-ой вершины с j-ым ребром
+     * @throws IllegalArgumentException если матрица равна {@code null}
+     * @throws IllegalArgumentException если матрица не прямоугольная
+     */
     public IncidenceMatrixGraph(int[][] m) {
         if (m == null) {
             throw new IllegalArgumentException("Matrix is null");
@@ -45,7 +54,12 @@ public class IncidenceMatrixGraph implements Graph {
         }
     }
 
-    //Конструктор по списку вершин
+    /**
+     * Конструктор по списку вершин.
+     * Создает граф с заданными вершинами и пустой матрицей инцидентности.
+     * @param vertices список вершин графа
+     * @throws IllegalArgumentException если список вершин равен {@code null}
+     */
     public IncidenceMatrixGraph(List<Vertex> vertices) {
         if (vertices == null) {
             throw new IllegalArgumentException("vertices is null");
@@ -62,7 +76,17 @@ public class IncidenceMatrixGraph implements Graph {
         this.incidenceMatrix = new int[n][0];
     }
 
-    //Конструктор по вершинам и готовой матрице инцидентности
+    /**
+     * Конструктор по списку вершин и матрице инцидентности.
+     * Создает граф с заданными вершинами и готовой матрицей инцидентности.
+     *
+     * @param vertices список вершин графа
+     * @param incidenceMatrix матрица инцидентности, где incidenceMatrix[i][j] представляет
+     * связь i-ой вершины с j-ым ребром
+     * @throws IllegalArgumentException если список вершин или матрица инцидентности равны {@code null}
+     * @throws IllegalArgumentException если количество вершин не совпадает с количеством строк в матрице
+     * @throws IllegalArgumentException если матрица не прямоугольная
+     */
     public IncidenceMatrixGraph(List<Vertex> vertices, int[][] incidenceMatrix) {
         if (vertices == null) {
             throw new IllegalArgumentException("vertices is null");
