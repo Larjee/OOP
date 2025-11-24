@@ -93,11 +93,17 @@ implements <a href="Graph.html" title="interface in ru.nsu.munkuev">Graph</a></s
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">AdjacencyMatrixGraph</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int%5B%5D%5B%5D)" class="member-name-link">AdjacencyMatrixGraph</a><wbr>(int[][]&nbsp;m)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Пустой конструктор.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int%5B%5D%5B%5D)" class="member-name-link">AdjacencyMatrixGraph</a><wbr>(int[][]&nbsp;matrix)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Конструктор по матрице смежности.</div>
+</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List)" class="member-name-link">AdjacencyMatrixGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;&nbsp;vertices)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Конструктор по списку вершин.</div>
+</div>
 </div>
 </section>
 </li>
@@ -186,18 +192,35 @@ implements <a href="Graph.html" title="interface in ru.nsu.munkuev">Graph</a></s
 <section class="detail" id="&lt;init&gt;()">
 <h3>AdjacencyMatrixGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AdjacencyMatrixGraph</span>()</div>
+<div class="block">Пустой конструктор. При инициализации пустой список вершин пустая матрица смежности.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="&lt;init&gt;(int[][])">
 <h3>AdjacencyMatrixGraph</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AdjacencyMatrixGraph</span><wbr><span class="parameters">(int[][]&nbsp;m)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AdjacencyMatrixGraph</span><wbr><span class="parameters">(int[][]&nbsp;matrix)</span></div>
+<div class="block">Конструктор по матрице смежности. При инициализации матрица смежности совпадает с переданной в конструктор,
+ а список вершин строится исходя из матрицы.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>matrix</code> - квадратная матрица смежности</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если передана не квадратная матрица смежности</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="&lt;init&gt;(java.util.List)">
 <h3>AdjacencyMatrixGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AdjacencyMatrixGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;&nbsp;vertices)</span></div>
+<div class="block">Конструктор по списку вершин. При инициализации создается квадратная матрица смежности длиной,
+ равной длине списка вершин. Удобно использовать для графов изначально не имеющих ребра.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>vertices</code> - список вершин</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если передан пустой список вершин</dd>
+</dl>
 </section>
 </li>
 </ul>

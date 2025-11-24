@@ -93,14 +93,22 @@ implements <a href="Graph.html" title="interface in ru.nsu.munkuev">Graph</a></s
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">IncidenceMatrixGraph</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Пустой конструктор.</div>
+</div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int%5B%5D%5B%5D)" class="member-name-link">IncidenceMatrixGraph</a><wbr>(int[][]&nbsp;m)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Конструктор по матрице инцидентности.</div>
+</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List)" class="member-name-link">IncidenceMatrixGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;&nbsp;vertices)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Конструктор по списку вершин.</div>
+</div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.List,int%5B%5D%5B%5D)" class="member-name-link">IncidenceMatrixGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;&nbsp;vertices,
  int[][]&nbsp;incidenceMatrix)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Конструктор по списку вершин и матрице инцидентности.</div>
+</div>
 </div>
 </section>
 </li>
@@ -187,18 +195,37 @@ implements <a href="Graph.html" title="interface in ru.nsu.munkuev">Graph</a></s
 <section class="detail" id="&lt;init&gt;()">
 <h3>IncidenceMatrixGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IncidenceMatrixGraph</span>()</div>
+<div class="block">Пустой конструктор. Создает граф с пустым списком вершин и нулевой матрицей инцидентности.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="&lt;init&gt;(int[][])">
 <h3>IncidenceMatrixGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IncidenceMatrixGraph</span><wbr><span class="parameters">(int[][]&nbsp;m)</span></div>
+<div class="block">Конструктор по матрице инцидентности.
+ Создает граф с автоматически сгенерированными вершинами на основе матрицы инцидентности.
+ Вершинам присваиваются имена, соответствующие их индексам.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>m</code> - матрица инцидентности, где m[i][j] представляет связь i-ой вершины с j-ым ребром</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если матрица равна <code>null</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если матрица не прямоугольная</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="&lt;init&gt;(java.util.List)">
 <h3>IncidenceMatrixGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IncidenceMatrixGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;&nbsp;vertices)</span></div>
+<div class="block">Конструктор по списку вершин.
+ Создает граф с заданными вершинами и пустой матрицей инцидентности.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>vertices</code> - список вершин графа</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если список вершин равен <code>null</code></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -206,6 +233,18 @@ implements <a href="Graph.html" title="interface in ru.nsu.munkuev">Graph</a></s
 <h3>IncidenceMatrixGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IncidenceMatrixGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Vertex.html" title="class in ru.nsu.munkuev">Vertex</a>&gt;&nbsp;vertices,
  int[][]&nbsp;incidenceMatrix)</span></div>
+<div class="block">Конструктор по списку вершин и матрице инцидентности.
+ Создает граф с заданными вершинами и готовой матрицей инцидентности.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>vertices</code> - список вершин графа</dd>
+<dd><code>incidenceMatrix</code> - матрица инцидентности, где incidenceMatrix[i][j] представляет
+ связь i-ой вершины с j-ым ребром</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если список вершин или матрица инцидентности равны <code>null</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если количество вершин не совпадает с количеством строк в матрице</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - если матрица не прямоугольная</dd>
+</dl>
 </section>
 </li>
 </ul>

@@ -82,13 +82,14 @@ loadScripts(document, 'script');</script>
  <ul>
      <li>Граф ориентированный, без параллельных рёбер и петель (по смыслу реализаций).</li>
      <li>Вершины хранятся в списке <a href="#getVertices()"><code>getVertices()</code></a>, индекс в списке совпадает с <a href="Vertex.html#getId()"><code>Vertex.getId()</code></a>.</li>
-     <li>Все методы, принимающие вершину по числовому id, ожидают id в диапазоне <code>[0, getVertices().size())</code>.</li>
+     <li>Все методы, принимающие вершину по числовому id, ожидают id в диапазоне <code>[0, getVertices().size())</code>.
+         В случае некорректного id, в зависимости от реализации, методы будут возвращать <code>false</code> или <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a>.</li>
  </ul>
 
  <h2>Для разработчиков: как добавить новую реализацию графа</h2>
  <ol>
      <li>Создайте класс, реализующий <code>Graph</code> (например, <code>MyFancyGraph</code>).</li>
-     <li>Выберите внутреннее представление (матрица смежности, списки смежности, матрица инцидентности и т.п.).</li>
+     <li>Выберите внутреннее представление.</li>
      <li>Гарантируйте инвариант:
          <ul>
              <li>Список вершин не содержит <code>null</code>.</li>
@@ -100,7 +101,7 @@ loadScripts(document, 'script');</script>
          <ul>
              <li><a href="#addVertex(ru.nsu.munkuev.Vertex)"><code>addVertex(Vertex)</code></a> / <a href="#removeVertex(ru.nsu.munkuev.Vertex)"><code>removeVertex(Vertex)</code></a> — добавление и удаление вершин;</li>
              <li><a href="#addEdge(int,int)"><code>addEdge(int, int)</code></a> / <a href="#removeEdge(int,int)"><code>removeEdge(int, int)</code></a> — добавление и удаление рёбер;</li>
-             <li><a href="#getParents(int)"><code>getParents(int)</code></a> / <a href="#getChildren(int)"><code>getChildren(int)</code></a> — доступ к структуре графа;</li>
+             <li><a href="#getParents(int)"><code>getParents(int)</code></a> / <a href="#getChildren(int)"><code>getChildren(int)</code></a> — доступ к списку предков и потомков конкретной вершины;</li>
              <li><a href="#getVertices()"><code>getVertices()</code></a> — доступ к вершинам.</li>
          </ul>
      </li>
@@ -116,7 +117,7 @@ loadScripts(document, 'script');</script>
  <p>
  Все текущие реализации (<a href="AdjacencyMatrixGraph.html" title="class in ru.nsu.munkuev"><code>AdjacencyMatrixGraph</code></a>, <a href="AdjacencyListGraph.html" title="class in ru.nsu.munkuev"><code>AdjacencyListGraph</code></a>, <a href="IncidenceMatrixGraph.html" title="class in ru.nsu.munkuev"><code>IncidenceMatrixGraph</code></a>)
  используют <b>структурное равенство</b>:
- два графа равны, если у них совпадает количество вершин и для каждой вершины совпадает отсортированный список детей.
+ два графа равны, если у них совпадает количество вершин и для каждой вершины совпадает отсортированный список детей с точностью до индексов.
  </p>
 
  <ul>
