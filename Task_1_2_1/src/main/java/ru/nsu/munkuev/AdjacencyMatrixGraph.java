@@ -8,17 +8,24 @@ public class AdjacencyMatrixGraph implements Graph {
     private List<Vertex> vertices;
     private int[][] adjacencyMatrix;
 
-    //Пустой констркутор
+    /**
+     * Пустой конструктор. При инициализации пустой список вершин пустая матрица смежности.
+     */
     public AdjacencyMatrixGraph(){
         this.vertices = new ArrayList<>();
         this.adjacencyMatrix = new int[0][0];
     }
 
-    //Конструктор по матрице смежности
-    public AdjacencyMatrixGraph(int[][] m) {
-        int n = m.length;
+    /**
+     * Конструктор по матрице смежности. При инициализации матрица смежности совпадает с переданной в конструктор,
+     * а список вершин строится исходя из матрицы.
+     * @param matrix квадратная матрица смежности
+     * @throws IllegalArgumentException если передана не квадратная матрица смежности
+     */
+    public AdjacencyMatrixGraph(int[][] matrix) {
+        int n = matrix.length;
         for (int i = 0; i < n; i++) {
-            if (m[i].length != n){
+            if (matrix[i].length != n){
                 throw new IllegalArgumentException("Matrix must be square");
             }
         }
@@ -29,15 +36,17 @@ public class AdjacencyMatrixGraph implements Graph {
 
         this.adjacencyMatrix = new int[n][n];
         for (int i = 0; i < n; i++){
-            System.arraycopy(m[i], 0, this.adjacencyMatrix[i], 0, n);
+            System.arraycopy(matrix[i], 0, this.adjacencyMatrix[i], 0, n);
         }
     }
 
 
-    //Конструктор по списку вершин
-    // не знаю вообще зачем это может понадобиться
-    // например, если мы просто создадим пустую матрицу по вершинам
-    // и уже сами ее заполним как надо.
+    /**
+     * Конструктор по списку вершин. При инициализации создается квадратная матрица смежности длиной,
+     * равной длине списка вершин. Удобно использовать для графов изначально не имеющих ребра.
+     * @param vertices список вершин
+     * @throws IllegalArgumentException если передан пустой список вершин
+     */
     public AdjacencyMatrixGraph(List<Vertex> vertices) {
         if(vertices == null){
             throw new IllegalArgumentException("vertices is null");
