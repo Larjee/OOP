@@ -274,6 +274,20 @@ public class AdjacencyListGraph implements Graph {
         return sb.toString();
     }
 
+    @Override
+    public int hashCode() {
+        int n = getVertices().size();
+        int result = n;
+
+        for (int v = 0; v < n; v++) {
+            List<Integer> children = new ArrayList<>(getChildren(v));
+            Collections.sort(children);
+            result = 31 * result + children.hashCode();
+        }
+
+        return result;
+    }
+
     /**
      * Проверяет корректность индекса, при добавлении вершины или вставке ребра.
      * @param index проверяемый индекс
