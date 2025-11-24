@@ -187,15 +187,15 @@ class GraphTest {
 
         assertEquals(3, g.getVertices().size());
 
-        // Невалидные индексы
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(-1, 0));
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(0, -1));
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(3, 0));
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).addEdge(0, 3));
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(-1, 0));
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(0, -1));
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(3, 0));
-        assertThrows(IllegalArgumentException.class, () -> ((AdjacencyListGraph) g).removeEdge(0, 3));
+        //Невалидные индексы
+        assertFalse(g.addEdge(-1, 0));
+        assertFalse(g.addEdge(0, -1));
+        assertFalse(g.addEdge(3, 0));
+        assertFalse(g.addEdge(0, 3));
+        assertFalse(g.removeEdge(-1, 0));
+        assertFalse(g.removeEdge(0, -1));
+        assertFalse(g.removeEdge(3, 0));
+        assertFalse(g.removeEdge(0, 3));
 
         // Добавляем рёбра 0 -> 1 и 1 -> 2
         assertTrue(g.addEdge(0, 1));
