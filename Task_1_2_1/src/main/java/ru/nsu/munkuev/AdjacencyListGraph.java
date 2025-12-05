@@ -1,6 +1,8 @@
 package ru.nsu.munkuev;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class AdjacencyListGraph implements Graph {
     private List<Vertex> vertices;
