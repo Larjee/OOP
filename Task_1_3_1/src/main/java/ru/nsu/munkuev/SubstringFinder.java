@@ -69,7 +69,7 @@ public class SubstringFinder{
 
             int codePoint;
             while ((codePoint = readUtf8CodePoint(in)) != -1) {
-                window[writePos++] = codePoint;
+                window[writePos] = codePoint;
 
                 if(countSymbols < m){
                     countSymbols++;
@@ -81,7 +81,7 @@ public class SubstringFinder{
                         positions.add(cpIndex - m + 1);
                     }
                 }
-                
+
                 writePos = (writePos + 1) % m;
                 cpIndex++;
             }
