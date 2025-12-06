@@ -29,11 +29,9 @@ import java.util.Objects;
  * <p>
  * Вместимость таблицы увеличивается автоматически при превышении порога загрузки
  * ({@code threshold}).
- *
- * <blockquote><pre>
- *     {@code threshold = capacity * loadFactor}
- * </pre></blockquote>
- *
+ *      <blockquote><pre>
+ *          {@code threshold = capacity * loadFactor}
+ *      </pre></blockquote>
  * При ресайзе все существующие узлы перераспределяются по новому массиву бакетов.
  * </p>
  *
