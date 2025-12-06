@@ -74,6 +74,11 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>K</code> - тип ключей</dd>
+<dd><code>V</code> - тип значений</dd>
+</dl>
+<dl class="notes">
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="Node.html" title="class in ru.nsu.munkuev">Node</a>&lt;K,<wbr>V&gt;&gt;</code></dd>
 </dl>
@@ -81,6 +86,42 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">HashTable&lt;K,<wbr>V&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="Node.html" title="class in ru.nsu.munkuev">Node</a>&lt;K,<wbr>V&gt;&gt;</span></div>
+<div class="block">Реализация хеш-таблицы, отображений ключей <code>K</code> в значения <code>V</code>.
+ <p>
+ Внутри таблица хранит элементы в массиве бакетов. Каждый бакет представляет собой
+ односвязный список из узлов <a href="Node.html" title="class in ru.nsu.munkuev"><code>Node</code></a>, в каждом из которых лежит пара <code>(key, value)</code>.
+ Коллизии разрешаются методом цепочек.
+
+ <p>
+ Основные операции:
+ <ul>
+     <li><a href="#add(K,V)"><code>add(Object, Object)</code></a> — добавление или обновление пары <code>(key, value)</code>;</li>
+     <li><a href="#get(K)"><code>get(Object)</code></a> — получение значения по ключу;</li>
+     <li><a href="#remove(K)"><code>remove(Object)</code></a> — удаление пары по ключу;</li>
+     <li><a href="#contains(K)"><code>contains(Object)</code></a> — проверка наличия ключа;</li>
+     <li><a href="#clear()"><code>clear()</code></a> — полная очистка таблицы.</li>
+ </ul>
+ При нормальной загрузке таблицы амортизированная сложность этих операций близка к <code>O(1)</code>.
+
+ <p>
+ Вместимость таблицы увеличивается автоматически при превышении порога загрузки
+ (<code>threshold</code>).
+      <blockquote><pre>
+          <code>threshold = capacity * loadFactor</code>
+      </pre></blockquote>
+ При ресайзе все существующие узлы перераспределяются по новому массиву бакетов.
+
+ <p>
+ Ключи не могут быть <code>null</code>. Попытка передать <code>null</code> в методы
+ <a href="#add(K,V)"><code>add(Object, Object)</code></a>, <a href="#get(K)"><code>get(Object)</code></a>, <a href="#remove(K)"><code>remove(Object)</code></a> или
+ <a href="#contains(K)"><code>contains(Object)</code></a> приведёт к выбросу <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link"><code>NullPointerException</code></a>.
+ Значения <code>V</code> допускается хранить равными <code>null</code>.
+
+ <p>
+ Класс реализует интерфейс <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link"><code>Iterable</code></a>, поэтому по всем хранимым узлам
+ можно пройтись с помощью цикла <code>for-each</code>. При структурных изменениях таблицы
+ (добавление, удаление, очистка) после создания итератора последующие вызовы его
+ методов приводят к выбросу <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ConcurrentModificationException.html" title="class or interface in java.util" class="external-link"><code>ConcurrentModificationException</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
