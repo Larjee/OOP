@@ -24,7 +24,24 @@ import java.util.ArrayList;
  * файла и подстроку, и возвращает массив всех индексов начала вхождений
  * этой подстроки. В случае отсутствия вхождений возвращается пустой массив.
  */
-public class Substring{
+public class SubstringFinder{
+    private static final int ASCII_MASK           = 0b1000_0000;
+
+    private static final int TWO_BYTE_MASK        = 0b1110_0000;
+    private static final int TWO_BYTE_PREFIX      = 0b1100_0000;
+
+    private static final int THREE_BYTE_MASK      = 0b1111_0000;
+    private static final int THREE_BYTE_PREFIX    = 0b1110_0000;
+
+    private static final int FOUR_BYTE_MASK       = 0b1111_1000;
+    private static final int FOUR_BYTE_PREFIX     = 0b1111_0000;
+
+    private static final int CONT_MASK            = 0b1100_0000;
+    private static final int CONT_PREFIX          = 0b1000_0000;
+
+    private static final int CONT_PAYLOAD_MASK    = 0b0011_1111;
+
+
     /**
      * Ищет заданную подстроку в указанном файле. Возвращает индексы всех символьных вхождений подстроки в файле.
      * В случае отсутствия подстроки в файле, возвращается пустой массив.
@@ -58,7 +75,7 @@ public class Substring{
                     window[m - 1] = codePoint;
                 }
 
-                if (winSize == m && equals(window, pattern)) {
+                if (winSize == m && isStringsEquals(window, pattern)) {
                     positions.add(cpIndex - m + 1);
                 }
 
@@ -83,7 +100,7 @@ public class Substring{
      * @param b второй массив
      * @return {@code true} если равны, {@code false} в противном случае
      */
-    private boolean equals(int[] a, int[] b) {
+    private boolean isStringsEquals(int[] a, int[] b) {
         for (int i = 0; i < b.length; i++) {
             if (a[i] != b[i]) {
                 return false;
@@ -110,43 +127,41 @@ public class Substring{
         int b0 = in.read();
         if (b0 == -1) return -1;
 
-        // 1-байтовый
-        if ((b0 & 0b1000_0000) == 0) {
+        // 1-байтовый (ASCII)
+        if ((b0 & ASCII_MASK) == 0) {
             return b0;
         }
 
         int size;
         int codePoint;
 
-        //Два октета
-        if ((b0 & 0b1110_0000) == 0b1100_0000) {
+        // Два октета
+        if ((b0 & TWO_BYTE_MASK) == TWO_BYTE_PREFIX) {
             size = 1;
             codePoint = b0 & 0b0001_1111;
         }
-        //Три октета
-        else if ((b0 & 0b1111_0000) == 0b1110_0000) {
+        // Три октета
+        else if ((b0 & THREE_BYTE_MASK) == THREE_BYTE_PREFIX) {
             size = 2;
             codePoint = b0 & 0b0000_1111;
         }
-        //Четыре октета
-        else if ((b0 & 0b1111_1000) == 0b1111_0000) {
+        // Четыре октета
+        else if ((b0 & FOUR_BYTE_MASK) == FOUR_BYTE_PREFIX) {
             size = 3;
             codePoint = b0 & 0b0000_0111;
-        }
-        else {
+        } else {
             throw new IOException("Invalid UTF-8 start byte: " + b0);
         }
 
-        //Собираем в кучу все полезные байты, тем самым получая кодПоинт
         for (int i = 0; i < size; i++) {
             int bx = in.read();
             if (bx == -1) {
                 throw new IOException("Truncated UTF-8 sequence");
             }
-            if ((bx & 0b1100_0000) != 0b1000_0000) {
+            if ((bx & CONT_MASK) != CONT_PREFIX) {
                 throw new IOException("Invalid UTF-8 continuation byte: " + bx);
             }
-            codePoint = (codePoint << 6) | (bx & 0b0011_1111);
+            codePoint = (codePoint << 6) | (bx & CONT_PAYLOAD_MASK);
         }
 
         return codePoint;

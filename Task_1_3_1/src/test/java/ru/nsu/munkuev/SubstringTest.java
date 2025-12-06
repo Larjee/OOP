@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SubstringTest {
 
-    private final Substring substring = new Substring();
+    private final SubstringFinder substring = new SubstringFinder();
 
     private String createTempFile(String content) throws IOException {
         Path path = Files.createTempFile("substring-test-", ".txt");
