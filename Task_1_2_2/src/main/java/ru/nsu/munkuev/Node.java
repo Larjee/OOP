@@ -1,5 +1,13 @@
 package ru.nsu.munkuev;
 
+
+/**
+ * Узел хранимый в хеш-таблице {@link HashTable}.
+ * Представляет собой элемент односвязного списка в бакете и содержит пару {@code (key, value)}.
+ *
+ * @param <K> тип ключа
+ * @param <V> тип значения
+ */
 public class Node<K, V> {
     private final K key;
     private V value;

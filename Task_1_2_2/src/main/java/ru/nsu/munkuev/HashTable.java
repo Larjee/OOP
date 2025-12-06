@@ -6,6 +6,54 @@ import java.util.NoSuchElementException;
 import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
+/**
+ * Реализация хеш-таблицы, отображений ключей {@code K} в значения {@code V}.
+ * <p>
+ * Внутри таблица хранит элементы в массиве бакетов. Каждый бакет представляет собой
+ * односвязный список из узлов {@link Node}, в каждом из которых лежит пара {@code (key, value)}.
+ * Коллизии разрешаются методом цепочек.
+ * </p>
+ *
+ * <p>
+ * Основные операции:
+ * <ul>
+ *     <li>{@link #add(Object, Object)} — добавление или обновление пары {@code (key, value)};</li>
+ *     <li>{@link #get(Object)} — получение значения по ключу;</li>
+ *     <li>{@link #remove(Object)} — удаление пары по ключу;</li>
+ *     <li>{@link #contains(Object)} — проверка наличия ключа;</li>
+ *     <li>{@link #clear()} — полная очистка таблицы.</li>
+ * </ul>
+ * При нормальной загрузке таблицы амортизированная сложность этих операций близка к {@code O(1)}.
+ * </p>
+ *
+ * <p>
+ * Вместимость таблицы увеличивается автоматически при превышении порога загрузки
+ * ({@code threshold}).
+ *
+ * <blockquote><pre>
+ *     {@code threshold = capacity * loadFactor}
+ * </pre></blockquote>
+ *
+ * При ресайзе все существующие узлы перераспределяются по новому массиву бакетов.
+ * </p>
+ *
+ * <p>
+ * Ключи не могут быть {@code null}. Попытка передать {@code null} в методы
+ * {@link #add(Object, Object)}, {@link #get(Object)}, {@link #remove(Object)} или
+ * {@link #contains(Object)} приведёт к выбросу {@link NullPointerException}.
+ * Значения {@code V} допускается хранить равными {@code null}.
+ * </p>
+ *
+ * <p>
+ * Класс реализует интерфейс {@link Iterable}, поэтому по всем хранимым узлам
+ * можно пройтись с помощью цикла {@code for-each}. При структурных изменениях таблицы
+ * (добавление, удаление, очистка) после создания итератора последующие вызовы его
+ * методов приводят к выбросу {@link java.util.ConcurrentModificationException}.
+ * </p>
+ *
+ * @param <K> тип ключей
+ * @param <V> тип значений
+ */
 public class HashTable<K,V> implements Iterable<Node<K,V>> {
     /**
      * При создании хеш-таблицы пустым конструктором, ей присваивается значение
