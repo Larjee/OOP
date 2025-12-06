@@ -64,21 +64,25 @@ public class SubstringFinder{
             int[] window = new int[m]; //Бегающее окно
             int winSize = 0;           //Размер окна
             int cpIndex = 0;           //индекс по символам (code point’ам)
+            int writePos = 0;          //Позиция для записи символа
+            int countSymbols = 0;
 
             int codePoint;
             while ((codePoint = readUtf8CodePoint(in)) != -1) {
-                if (winSize < m) {
-                    window[winSize++] = codePoint;
-                }
-                else {
-                    System.arraycopy(window, 1, window, 0, m - 1);
-                    window[m - 1] = codePoint;
+                window[writePos++] = codePoint;
+
+                if(countSymbols < m){
+                    countSymbols++;
                 }
 
-                if (winSize == m && isStringsEquals(window, pattern)) {
-                    positions.add(cpIndex - m + 1);
+                if (countSymbols == m) {
+                    int start = (writePos + 1) % m;
+                    if (isStringsEqualsCircular(window, pattern, start)) {
+                        positions.add(cpIndex - m + 1);
+                    }
                 }
-
+                
+                writePos = (writePos + 1) % m;
                 cpIndex++;
             }
         }
@@ -94,15 +98,19 @@ public class SubstringFinder{
     }
 
     /**
-     * Проверяет на равенство два массива. Используется в поиске подстроки, когда сравнивается "бегающее окно"
+     * Проверяет на равенство два массива. Причем один из них циклический(buffer).
+     * Используется в поиске подстроки, когда сравнивается "бегающее окно"
      * с заданной подстрокой.
-     * @param a первый массив
-     * @param b второй массив
+     * @param buffer циклический массив
+     * @param pattern шаблон подстроки для сравнения
+     * @param start начало циклического массива
      * @return {@code true} если равны, {@code false} в противном случае
      */
-    private boolean isStringsEquals(int[] a, int[] b) {
-        for (int i = 0; i < b.length; i++) {
-            if (a[i] != b[i]) {
+    private boolean isStringsEqualsCircular(int[] buffer, int[] pattern, int start) {
+        int m = pattern.length;
+        for (int i = 0; i < m; i++) {
+            int idx = (start + i) % m;
+            if (buffer[idx] != pattern[i]) {
                 return false;
             }
         }
