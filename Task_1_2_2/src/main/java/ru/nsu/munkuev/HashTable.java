@@ -7,16 +7,48 @@ import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
 public class HashTable<K,V> implements Iterable<Node<K,V>> {
-    //Константы для дефолтного значения
+    /**
+     * При создании хеш-таблицы пустым конструктором, ей присваивается значение
+     * вместимости по умолчанию.
+     */
     private static final int DEFAULT_CAPACITY = 16;
+    /**
+     * При создании хеш-таблицы пустым конструктором, ей присваивается значение
+     * коэффициента заполненности по умолчанию.
+     */
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    //Поля таблицы
-    Node<K,V>[] table;              //Таблица хранящая пары (K, V)
-    private int size;               //Текущее количество пар (K, V)
-    private int threshold;          //Значение порога для ресайза таблицы
-    private float loadFactor;       //Степень загрузки таблицы
-    private int modCount;           //Счетчик изменений таблицы для ConcurrentModificationException
+    /**
+     * Массив бакетов, в каждом элементе которого хранится цепочка узлов {@link Node}.
+     */
+    Node<K,V>[] table;
+
+    /**
+     * Текущее количество пар {@code (K, V)} в таблице.
+     */
+    private int size;
+
+    /**
+     * Порог, при достижении которого выполняется ресайз таблицы.
+     * <p>
+     * Вычисляется как:
+     * <blockquote><pre>
+     * threshold = (int) (newCapacity * loadFactor);
+     * </pre></blockquote>
+     * </p>
+     */
+    private int threshold;
+
+    /**
+     * Текущий коэффициент заполнения таблицы. Определяет момент ресайза.
+     */
+    private float loadFactor;
+
+    /**
+     * Счётчик структурных модификаций таблицы.
+     * Используется для обнаружения конкурентных модификаций в итераторе.
+     */
+    private int modCount;
 
 
     /**
@@ -223,6 +255,19 @@ public class HashTable<K,V> implements Iterable<Node<K,V>> {
 
         return true;
     }
+
+
+    @Override
+    public int hashCode() {
+        int h = 0;
+        for (Node<K, V> node : this) {
+            K key = node.getKey();
+            V value = node.getValue();
+            h += Objects.hashCode(key) ^ Objects.hashCode(value);
+        }
+        return h;
+    }
+
 
 
     /**
