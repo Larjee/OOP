@@ -1,9 +1,11 @@
 package ru.nsu.munkuev;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * файла и подстроку, и возвращает массив всех индексов начала вхождений
  * этой подстроки. В случае отсутствия вхождений возвращается пустой массив.
  */
-public class SubstringFinder{
+public class SubstringFinder {
     private static final int ASCII_MASK           = 0b1000_0000;
 
     private static final int TWO_BYTE_MASK        = 0b1110_0000;
@@ -50,7 +52,7 @@ public class SubstringFinder{
      * @return массив всех вхождений подстроки в файле
      *
      */
-    public int[] find(String filename, String substring) {
+    public int[] find(Path file, String substring) throws IOException {
         int[] pattern = substring.codePoints().toArray();
         int m = pattern.length;
 
@@ -60,7 +62,7 @@ public class SubstringFinder{
 
         List<Integer> positions = new ArrayList<>();
 
-        try (InputStream in = new FileInputStream(filename)) {
+        try (InputStream in = new FileInputStream(file.toFile())) {
             int[] window = new int[m]; //Бегающее окно
             int winSize = 0;           //Размер окна
             int cpIndex = 0;           //индекс по символам (code point’ам)
@@ -85,9 +87,6 @@ public class SubstringFinder{
                 writePos = (writePos + 1) % m;
                 cpIndex++;
             }
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
         int[] res = new int[positions.size()];
