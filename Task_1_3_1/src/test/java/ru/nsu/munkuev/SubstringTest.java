@@ -89,7 +89,7 @@ class SubstringTest {
         byte[] invalid = new byte[]{(byte) 0xC3, 0x28};
         Files.write(path, invalid);
 
-        assertThrows(RuntimeException.class,
+        assertThrows(IOException.class,
                 () -> substring.find(path, "x"));
     }
 
