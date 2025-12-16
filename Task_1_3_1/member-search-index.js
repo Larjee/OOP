@@ -1,1 +1,1 @@
-memberSearchIndex = [{"p":"ru.nsu.munkuev","c":"SubstringFinder","l":"find(String, String)","u":"find(java.lang.String,java.lang.String)"},{"p":"ru.nsu.munkuev","c":"SubstringFinder","l":"SubstringFinder()","u":"%3Cinit%3E()"}];updateSearchResults();
+memberSearchIndex = [{"p":"ru.nsu.munkuev","c":"SubstringFinder","l":"find(Path, String)","u":"find(java.nio.file.Path,java.lang.String)"},{"p":"ru.nsu.munkuev","c":"SubstringFinder","l":"SubstringFinder()","u":"%3Cinit%3E()"}];updateSearchResults();
