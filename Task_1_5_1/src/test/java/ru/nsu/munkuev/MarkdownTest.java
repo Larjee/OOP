@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class MarkdownTest {
     // ============================================================
@@ -208,4 +209,106 @@ class MarkdownTest {
         assertThrows(IllegalArgumentException.class, () -> new Table.Builder().withRowLimit(-1));
     }
 
+
+
+    // ============================================================
+    // =========================== Element ===========================
+    // ============================================================
+    @Test
+    void text_nullReturnEmptyPlain() {
+        Text t = Element.text(null);
+        assertEquals("", t.toMarkdown());
+        assertTrue(t instanceof Text.Plain);
+    }
+
+    @Test
+    void text_objectUseToString() {
+        Text t = Element.text(123);
+        assertEquals("123", t.toMarkdown());
+    }
+
+    @Test
+    void text_elementUseToMarkdown() {
+        Element e = () -> "**x**";
+        Text t = Element.text(e);
+        assertEquals("**x**", t.toMarkdown());
+    }
+
+    @Test
+    void inlineReturnInlineIfAlreadyInline() {
+        Inline in = new Text.Bold("x");
+        assertSame(in, Element.inline(in));
+    }
+
+    @Test
+    void inlinedWrapNonInlineIntoPlain() {
+        Inline in = Element.inline(42);
+        assertEquals("42", in.toMarkdown());
+        assertTrue(in instanceof Text.Plain);
+    }
+
+
+    // ============================================================
+    // =========================== Image ===========================
+    // ============================================================
+    @Test
+    void imageRenderCorrectly() {
+        Image img = new Image(new Text.Plain("alt"), "https://x.y/img.png");
+        assertEquals("![alt](https://x.y/img.png)", img.toMarkdown());
+    }
+
+    @Test
+    void image_nullUrl_BecomeEmpty() {
+        Image img = new Image(new Text.Plain("alt"), null);
+        assertEquals("![alt]()", img.toMarkdown());
+    }
+
+    @Test
+    void equals_hashCode_Work() {
+        Image a = new Image(new Text.Plain("alt"), "u");
+        Image b = new Image(new Text.Plain("alt"), "u");
+        Image c = new Image(new Text.Plain("alt2"), "u");
+
+        assertEquals(a, b);
+        assertEquals(a.hashCode(), b.hashCode());
+        assertNotEquals(a, c);
+        assertNotEquals(a, null);
+        assertNotEquals(a, "nope");
+    }
+
+    @Test
+    void ctor_RejectNullAlt() {
+        assertThrows(NullPointerException.class, () -> new Image(null, "u"));
+    }
+
+
+    // ============================================================
+    // =========================== Document ===========================
+    // ============================================================
+    @Test
+    void documentJoinBlocksWithBlankLine() {
+        Document doc = new Document.Builder()
+                .add(new Heading(1, new Text.Plain("A")))
+                .add(new Heading(2, new Text.Plain("B")))
+                .build();
+
+        assertEquals("# A\n\n## B", doc.toMarkdown());
+        assertEquals(doc.toMarkdown(), doc.toString());
+    }
+
+    @Test
+    void hashCode_document() {
+        Document a = new Document.Builder().add(new Heading(1, new Text.Plain("X"))).build();
+        Document b = new Document.Builder().add(new Heading(1, new Text.Plain("X"))).build();
+        Document c = new Document.Builder().add(new Heading(1, new Text.Plain("Y"))).build();
+
+        assertEquals(a, b);
+        assertEquals(a.hashCode(), b.hashCode());
+        assertNotEquals(a, c);
+    }
+
+    @Test
+    void builderRejectNullBlock() {
+        assertThrows(NullPointerException.class, () -> new Document.Builder().add(null));
+    }
 }
