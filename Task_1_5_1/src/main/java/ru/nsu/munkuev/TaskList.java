@@ -34,7 +34,9 @@ public final class TaskList implements Block {
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
             sb.append("- [").append(t.done ? "x" : " ").append("] ").append(t.text.toMarkdown());
-            if (i + 1 < tasks.size()) sb.append("\n");
+            if (i + 1 < tasks.size()) {
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }

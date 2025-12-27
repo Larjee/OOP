@@ -18,7 +18,9 @@ public final class Quote implements Block {
 
         for (int i = 0; i < lines.length; i++) {
             sb.append("> ").append(lines[i]);
-            if (i + 1 < lines.length) sb.append("\n");
+            if (i + 1 < lines.length) {
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }

@@ -50,7 +50,9 @@ public final class Table implements Block {
         sb.append(alignLine(cols, widths)).append("\n");
         for (int i = 1; i < rendered.size(); i++) {
             sb.append(rowLine(rendered.get(i), widths));
-            if (i + 1 < rendered.size()) sb.append("\n");
+            if (i + 1 < rendered.size()) {
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }
@@ -83,7 +85,9 @@ public final class Table implements Block {
 
     private static String pad(String s, int width, int align) {
         int diff = width - s.length();
-        if (diff <= 0) return s;
+        if (diff <= 0) {
+            return s;
+        }
 
         return switch (align) {
             case ALIGN_RIGHT -> " ".repeat(diff) + s;
@@ -151,7 +155,9 @@ public final class Table implements Block {
                 row.add(asInline(cell));
             }
 
-            if (colCount == null) colCount = row.size();
+            if (colCount == null) {
+                colCount = row.size();
+            }
             if (row.size() != colCount) {
                 throw new IllegalArgumentException("All rows must have same column count");
             }

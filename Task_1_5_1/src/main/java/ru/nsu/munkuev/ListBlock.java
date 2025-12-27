@@ -46,7 +46,9 @@ public final class ListBlock implements Block {
             for (int i = 1; i < lines.length; i++) {
                 sb.append("\n").append("  ").append(lines[i]);
             }
-            if (idx + 1 < items.size()) sb.append("\n");
+            if (idx + 1 < items.size()) {
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }
@@ -66,19 +68,23 @@ public final class ListBlock implements Block {
         public Builder(Type type) { this.type = Objects.requireNonNull(type); }
 
         public Builder beginItem() {
-            if (current != null) throw new IllegalStateException("Previous item not ended");
+            if (current != null) {
+                throw new IllegalStateException("Previous item not ended");
+            }
             current = new ArrayList<>();
             return this;
         }
 
         public Builder addToItem(Block b) {
-            if (current == null) beginItem();
+            if (current == null) {
+                beginItem();
+            }
             current.add(Objects.requireNonNull(b));
             return this;
         }
 
         public Builder endItem() {
-            if (current == null){
+            if (current == null) {
                 throw new IllegalStateException("No item started");
             }
             items.add(new Item(current));
@@ -91,7 +97,9 @@ public final class ListBlock implements Block {
         }
 
         public ListBlock build() {
-            if (current != null) endItem();
+            if (current != null) {
+                endItem();
+            }
             return new ListBlock(type, items);
         }
     }

@@ -2,6 +2,8 @@ package ru.nsu.munkuev;
 
 import java.util.Objects;
 
+import static ru.nsu.munkuev.BlocksUtility.trimLastNewLines;
+
 public final class CodeBlock implements Block {
     private final String language;
     private final String code;
@@ -54,8 +56,7 @@ public final class CodeBlock implements Block {
 
         public CodeBlock build() {
             String c = code.toString();
-            if (c.endsWith("\n")) c = c.substring(0, c.length() - 1);
-            return new CodeBlock(language, c);
+            return new CodeBlock(language, trimLastNewLines(c));
         }
     }
 }
