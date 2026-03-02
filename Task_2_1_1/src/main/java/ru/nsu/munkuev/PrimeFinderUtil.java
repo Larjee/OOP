@@ -7,7 +7,7 @@ public class PrimeFinderUtil {
     /**
      * Метод проверяющий число на его не простоту
      * @param n число
-     * @return @return {@code true} если число непростое, {@code false} иначе
+     * @return {@code true} если число непростое, {@code false} иначе
      */
     public static boolean isNotPrime(int n) {
         if(n < 2){
