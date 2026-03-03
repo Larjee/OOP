@@ -31,7 +31,7 @@ public class ParellelFinderTask implements Runnable {
      * @param begin Индекс начлаа подмассива для поиска непростого числа
      * @param end Индекс конца подмассива для поиска непростого числа(невключительно)
      * @param arr Массив в котором производится поиск непростого числа
-     * @param stop Индикатор остановки поиска  
+     * @param stop Индикатор остановки поиска
      */
     public ParellelFinderTask(int begin, int end, int arr[], AtomicBoolean stop) {
         this.begin = begin;
