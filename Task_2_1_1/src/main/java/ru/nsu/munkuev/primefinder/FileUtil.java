@@ -1,4 +1,4 @@
-package ru.nsu.munkuev.util;
+package ru.nsu.munkuev.primefinder;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

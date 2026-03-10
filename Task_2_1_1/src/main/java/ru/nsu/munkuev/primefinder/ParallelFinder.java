@@ -1,4 +1,4 @@
-package ru.nsu.munkuev.threads;
+package ru.nsu.munkuev.primefinder;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

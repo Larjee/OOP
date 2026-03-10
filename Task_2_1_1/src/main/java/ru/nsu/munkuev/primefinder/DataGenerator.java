@@ -1,4 +1,4 @@
-package ru.nsu.munkuev;
+package ru.nsu.munkuev.primefinder;
 
 import java.util.ArrayList;
 import java.util.List;

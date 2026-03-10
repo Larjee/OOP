@@ -1,4 +1,4 @@
-package ru.nsu.munkuev.util;
+package ru.nsu.munkuev.primefinder;
 
 /**
  * Вспомогательный класс для поиска непростых чисел
