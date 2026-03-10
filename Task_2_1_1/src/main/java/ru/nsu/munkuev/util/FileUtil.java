@@ -1,4 +1,4 @@
-package ru.nsu.munkuev;
+package ru.nsu.munkuev.util;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -7,7 +7,9 @@ import java.io.IOException;
 /**
  * Вспомогательный класс для работы с массивами и файлами
  */
-public class FileUtil {
+public final class FileUtil {
+
+    private  FileUtil() {}
 
     /**
      * Метод, записывающий массив в файл

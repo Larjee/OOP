@@ -1,4 +1,6 @@
-package ru.nsu.munkuev;
+package ru.nsu.munkuev.parallelStream;
+
+import ru.nsu.munkuev.util.PrimeFinderUtil;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package ru.nsu.munkuev;
+package ru.nsu.munkuev.threads;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

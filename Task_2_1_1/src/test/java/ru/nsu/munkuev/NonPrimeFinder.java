@@ -1,6 +1,10 @@
 package ru.nsu.munkuev;
 
 import org.junit.jupiter.api.Test;
+import ru.nsu.munkuev.parallelStream.ParallelStreamFinder;
+import ru.nsu.munkuev.sequential.SequentialFinder;
+import ru.nsu.munkuev.threads.ParallelFinder;
+import ru.nsu.munkuev.util.PrimeFinderUtil;
 
 import java.util.Arrays;
 

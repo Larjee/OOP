@@ -1,16 +1,19 @@
-package ru.nsu.munkuev;
+package ru.nsu.munkuev.util;
 
 /**
  * Вспомогательный класс для поиска непростых чисел
  */
-public class PrimeFinderUtil {
+public final class PrimeFinderUtil {
+
+    private PrimeFinderUtil() {}
+
     /**
      * Метод проверяющий число на его не простоту
      * @param n число
      * @return {@code true} если число непростое, {@code false} иначе
      */
     public static boolean isNotPrime(int n) {
-        if(n < 2){
+        if(n < 2) {
             return true;
         }
 

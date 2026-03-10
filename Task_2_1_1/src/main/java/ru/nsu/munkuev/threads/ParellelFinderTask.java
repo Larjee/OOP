@@ -1,6 +1,7 @@
-package ru.nsu.munkuev;
+package ru.nsu.munkuev.threads;
 
-import java.util.List;
+import ru.nsu.munkuev.util.PrimeFinderUtil;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ParellelFinderTask implements Runnable {

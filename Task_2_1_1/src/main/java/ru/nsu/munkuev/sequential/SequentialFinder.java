@@ -1,5 +1,7 @@
-package ru.nsu.munkuev;
+package ru.nsu.munkuev.sequential;
 
+
+import ru.nsu.munkuev.util.PrimeFinderUtil;
 
 /**
  * Класс, реализующий поиск непростого числа последовательным способом
