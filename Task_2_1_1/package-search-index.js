@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ru.nsu.munkuev"},{"l":"ru.nsu.munkuev.parallelStream"},{"l":"ru.nsu.munkuev.sequential"},{"l":"ru.nsu.munkuev.threads"},{"l":"ru.nsu.munkuev.util"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ru.nsu.munkuev.primefinder"}];updateSearchResults();
