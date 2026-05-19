@@ -20,7 +20,7 @@ public class Courier implements Runnable {
     @Override
     public void run() {
         try {
-            while (lifecycle.shouldCouriersContinue()) {
+            while (lifecycle.workingDay()) {
                 List<Order> batch = storage.takeBatch(trunkCapacity);
                 if (batch.isEmpty()) {
                     break;
