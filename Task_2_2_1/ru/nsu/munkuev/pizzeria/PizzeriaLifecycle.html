@@ -76,6 +76,18 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">PizzeriaLifecycle</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Управляет состоянием жизненного цикла пиццерии в течение рабочего дня.
+
+ <p>Класс хранит информацию о том, принимает ли пиццерия новые заказы,
+ а также отслеживает заказы, которые в данный момент находятся в обработке
+ у пекарей или курьеров.
+
+ <p>Активными считаются заказы, которые уже были взяты из очереди или со склада,
+ но ещё не были полностью обработаны. Например, заказ может готовиться пекарем
+ или доставляться курьером.
+
+ <p>Множество активных заказов является потокобезопасным, так как с ним
+ одновременно могут работать несколько потоков пекарей и курьеров.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,12 +126,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerActiveBatch(java.util.Collection)" class="member-name-link">registerActiveBatch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="Order.html" title="class in ru.nsu.munkuev.pizzeria">Order</a>&gt;&nbsp;orders)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldBakersContinue()" class="member-name-link">shouldBakersContinue</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldCouriersContinue()" class="member-name-link">shouldCouriersContinue</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopAcceptingOrders()" class="member-name-link">stopAcceptingOrders</a>()</code></div>
@@ -192,18 +198,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getActiveOrders()">
 <h3>getActiveOrders</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="Order.html" title="class in ru.nsu.munkuev.pizzeria">Order</a>&gt;</span>&nbsp;<span class="element-name">getActiveOrders</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="shouldBakersContinue()">
-<h3>shouldBakersContinue</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">shouldBakersContinue</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="shouldCouriersContinue()">
-<h3>shouldCouriersContinue</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">shouldCouriersContinue</span>()</div>
 </section>
 </li>
 </ul>
