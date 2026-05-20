@@ -47,8 +47,4 @@ public class PizzeriaLifecycle {
         return Set.copyOf(activeOrders);
     }
 
-    public boolean workingDay() {
-        return true;
-    }
-
 }

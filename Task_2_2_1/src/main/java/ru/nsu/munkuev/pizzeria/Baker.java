@@ -18,7 +18,7 @@ public class Baker implements Runnable {
     @Override
     public void run() {
         try {
-            while (lifecycle.workingDay()) {
+            while (true) {
                 Order order = orderQueue.take();
                 if (order == null) {
                     break;

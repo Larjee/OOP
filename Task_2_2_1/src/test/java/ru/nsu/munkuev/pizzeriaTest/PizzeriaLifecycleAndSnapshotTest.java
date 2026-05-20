@@ -28,8 +28,6 @@ class PizzeriaLifecycleAndSnapshotTest {
         Order second = new Order(2);
 
         assertTrue(lifecycle.isAcceptingOrders());
-        assertTrue(lifecycle.shouldBakersContinue());
-        assertTrue(lifecycle.shouldCouriersContinue());
 
         lifecycle.registerActive(first);
         lifecycle.registerActiveBatch(List.of(second));
