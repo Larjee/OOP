@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ru.nsu.munkuev.snake.view.JavaFxGameController"
+            onKeyPressed="#onKeyPressed"
+            focusTraversable="true"
+            style="-fx-background-color: #0f1115;">
+
+    <top>
+        <HBox spacing="20" alignment="CENTER_LEFT"
+              style="-fx-background-color: #15181d; -fx-padding: 10 16 10 16;">
+            <Label fx:id="scoreLabel" text="Length: 1"
+                   style="-fx-text-fill: #e4e4e7; -fx-font-size: 14;"/>
+            <Label fx:id="targetLabel" text="Target: 15"
+                   style="-fx-text-fill: #a1a1aa; -fx-font-size: 14;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="hintLabel" text="Arrows / WASD — move,  SPACE — start/restart"
+                   style="-fx-text-fill: #71717a; -fx-font-size: 12;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="boardPane" prefWidth="900" prefHeight="900">
+            <BorderPane.margin>
+                <Insets top="8" bottom="8" left="8" right="8"/>
+            </BorderPane.margin>
+            <Canvas fx:id="canvas"/>
+        </StackPane>
+    </center>
+
+</BorderPane>
