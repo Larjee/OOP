@@ -1,0 +1,11 @@
+{
+  "bakers": [1200, 1800, 900],
+  "couriers": [2, 3],
+  "storageCapacity": 4,
+  "workDurationMs": 10000,
+  "orderGenerationIntervalMs": 400,
+  "ordersToGenerate": 20,
+  "courierTripTimeMs": 2000,
+  "shutdownMode": "SNAPSHOT_AND_STOP",
+  "snapshotFile": "pending-orders.json"
+}
