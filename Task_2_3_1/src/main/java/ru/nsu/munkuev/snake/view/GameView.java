@@ -5,18 +5,17 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import ru.nsu.munkuev.snake.model.Food;
-import ru.nsu.munkuev.snake.model.GameField;
-import ru.nsu.munkuev.snake.model.GameState;
 import ru.nsu.munkuev.snake.model.Point;
 
 import java.util.List;
 
 /**
- * Отрисовывает {@link GameField} на {@link Canvas}. Чистое представление:
- * читает данные из модели и никогда её не изменяет.
+ * JavaFX-представление игры. Отрисовывает {@link GameFrame} на {@link Canvas}.
+ *
+ * <p>Класс не обращается к игровой модели напрямую. Он получает от контроллера
+ * уже подготовленные данные для кадра.
  */
-public class GameView {
+public class GameView implements GameRenderer {
 
     private static final Color BG_DARK = Color.web("#DA70D6");
     private static final Color BG_LIGHT = Color.web("#DDA0DD");
@@ -33,10 +32,11 @@ public class GameView {
         this.canvas = canvas;
     }
 
-    public void render(GameField field) {
+    @Override
+    public void render(GameFrame frame) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        int w = field.config().width();
-        int h = field.config().height();
+        int w = frame.width();
+        int h = frame.height();
 
         double canvasWidth = canvas.getWidth();
         double canvasHeight = canvas.getHeight();
@@ -44,6 +44,9 @@ public class GameView {
             return;
         }
 
+        // Клетка вычисляется от фактического размера Canvas.
+        // Благодаря этому поле 50x50, 150x150 и другие размеры вписываются
+        // в доступную область окна, а не растягивают окно до тысяч пикселей.
         double cell = Math.min(canvasWidth / w, canvasHeight / h);
         double boardWidth = cell * w;
         double boardHeight = cell * h;
@@ -52,7 +55,7 @@ public class GameView {
 
         gc.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        //Шахматный фон
+        // Шахматный фон.
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
                 gc.setFill(((x + y) % 2 == 0) ? BG_DARK : BG_LIGHT);
@@ -60,23 +63,22 @@ public class GameView {
             }
         }
 
-        //Препятствия
+        // Препятствия.
         gc.setFill(OBSTACLE);
-        for (Point p : field.obstacles()) {
+        for (Point p : frame.obstacles()) {
             gc.fillRect(offsetX + p.x() * cell, offsetY + p.y() * cell, cell, cell);
         }
 
-        //Еда
+        // Еда.
         gc.setFill(FOOD);
-        for (Food f : field.foods()) {
-            Point p = f.position();
+        for (Point p : frame.foods()) {
             double pad = cell * 0.15;
             gc.fillOval(offsetX + p.x() * cell + pad, offsetY + p.y() * cell + pad,
                     cell - 2 * pad, cell - 2 * pad);
         }
 
-        //Змейка
-        List<Point> body = field.snake().body();
+        // Змейка.
+        List<Point> body = frame.snakeBody();
         for (int i = 0; i < body.size(); i++) {
             Point p = body.get(i);
             gc.setFill(i == 0 ? SNAKE_HEAD : SNAKE_BODY);
@@ -85,18 +87,8 @@ public class GameView {
                     cell - 2 * pad, cell - 2 * pad, cell * 0.35, cell * 0.35);
         }
 
-        //Оверлеи
-        GameState state = field.state();
-        if (state == GameState.READY) {
-            drawOverlay(gc, "SNAKE", "Press SPACE to start");
-        }
-        else if (state == GameState.WON) {
-            drawOverlay(gc, "YOU WIN!",
-                    "Length " + field.snake().length() + " — press SPACE to restart");
-        }
-        else if (state == GameState.LOST) {
-            drawOverlay(gc, "GAME OVER",
-                    "Length " + field.snake().length() + " — press SPACE to restart");
+        if (frame.hasOverlay()) {
+            drawOverlay(gc, frame.overlayTitle(), frame.overlaySubtitle());
         }
     }
 

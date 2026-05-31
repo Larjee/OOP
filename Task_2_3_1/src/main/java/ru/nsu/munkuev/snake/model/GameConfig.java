@@ -23,6 +23,6 @@ public record GameConfig(
         int cellSize
 ) {
     public static GameConfig defaultConfig() {
-        return new GameConfig(50, 50, 3, 25, 70, 30);
+        return new GameConfig(50, 50, 3, 15, 140, 30);
     }
 }

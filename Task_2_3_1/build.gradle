@@ -21,7 +21,7 @@ javafx {
 }
 
 application {
-    mainClass = 'ru.nsu.munkuev.snake.Main'
+    mainClass = 'ru.nsu.munkuev.snake.view.Main'
 }
 
 idea {

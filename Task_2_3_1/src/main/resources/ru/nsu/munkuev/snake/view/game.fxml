@@ -10,7 +10,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ru.nsu.munkuev.snake.controller.GameController"
+            fx:controller="ru.nsu.munkuev.snake.view.JavaFxGameController"
             onKeyPressed="#onKeyPressed"
             focusTraversable="true"
             style="-fx-background-color: #0f1115;">
